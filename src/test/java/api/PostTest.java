@@ -1,11 +1,13 @@
 package api;
 
 import net.sf.json.JSONArray;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,6 +42,9 @@ public class PostTest {
                     System.out.println("executing request " + httppost.getURI());
                     try {
                         CloseableHttpResponse response = httpclient.execute(httppost);
+                        HttpEntity resEntity = response.getEntity();
+                        String a = EntityUtils.toString(resEntity, "UTF-8");
+                        System.out.println(a);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
