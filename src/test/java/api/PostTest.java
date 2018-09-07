@@ -28,7 +28,7 @@ public class PostTest {
                 .scheduleWithFixedDelay(() -> {
                     String message1 = "sxy";
                     String message2 = "123456";
-                    Map<String, String> map1 = new HashMap<>();
+                    Map<Object, Object> map1 = new HashMap<>();
                     map1.put("username", message1);
                     map1.put("password", message2);
                     CloseableHttpClient httpclient = HttpClients.createDefault();
