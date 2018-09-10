@@ -13,8 +13,8 @@ import java.util.Base64;
 
 public class ApiKeyServiceImpl implements ApiKeyService {
     @Override
-    public String getToken(String username, String password) {
-        byte[] credentials = (username + ":" + password).getBytes();
+    public String getToken(String ApiKey) {
+        byte[] credentials = ApiKey.getBytes();
         return Base64.getEncoder().encodeToString(credentials);
     }
 

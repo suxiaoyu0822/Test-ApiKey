@@ -27,7 +27,17 @@ public class SpartkRouterBuilder extends AbstractSpartkRouterBuilder {
     private void buildMessageCollectionApi() {
         path("/key", () -> {
             ApiKeyServiceImpl apiKeyService = new ApiKeyServiceImpl();
-            post("/do",new ApiKeyRoute(apiKeyService));
+            get("/do",new ApiKeyRoute(apiKeyService));
+        });
+        path("/application", () -> {
+            get("/Certificate",new GetCertificateRout());
+            post("/Authentication_method",new SelectAuthenticationMethodRoute());
+        });
+        path("/user", () -> {
+            post("/Register",new UserRegisterRoute());
+        });
+        path("/gateway", () -> {
+            get("/judge",new GatewayJudgeAutographRoute());
         });
     }
 }

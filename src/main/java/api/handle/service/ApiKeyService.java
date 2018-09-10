@@ -7,6 +7,6 @@ package api.handle.service;
  */
 
 public interface ApiKeyService {
-    String getToken(String username,String password);
+    String getToken(String ApiKey);
     String getApi_Key(String token);
 }
