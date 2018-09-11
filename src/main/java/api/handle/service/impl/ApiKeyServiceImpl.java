@@ -21,7 +21,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
     @Override
     public String getApi_Key(String token) {
         if (!token.isEmpty()){
-            return RandomStringUtils.randomAlphanumeric(16);
+                return RandomStringUtils.randomAlphanumeric(16);
         }
         return null;
     }

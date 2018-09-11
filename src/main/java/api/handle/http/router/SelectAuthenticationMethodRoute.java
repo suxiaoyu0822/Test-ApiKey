@@ -17,8 +17,10 @@ public class SelectAuthenticationMethodRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        LOGGER.info("Choose authentication mode API KEY or JWT");
         //发布api时，选择认证方式。API KEY or JWT
+        LOGGER.info("Choose authentication mode API KEY or JWT");
+        //选择应用证书
+        //选择用户组或者用户
         return "OK";
     }
 }
