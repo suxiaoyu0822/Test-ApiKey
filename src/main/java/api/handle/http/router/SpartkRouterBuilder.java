@@ -34,8 +34,9 @@ public class SpartkRouterBuilder extends AbstractSpartkRouterBuilder {
             post("/Authentication_method",new SelectAuthenticationMethodRoute());
         });
         path("/user", () -> {
-            post("/Register",new UserRegisterRoute());
+            post("/BasicRegister",new BasicUserRegisterRoute());
             post("/Digest",new DigestUserRegisterRoute());
+            post("/Register",new UserRegisterRoute());
         });
         path("/gateway", () -> {
             get("/judge",new GatewayJudgeAutographRoute());

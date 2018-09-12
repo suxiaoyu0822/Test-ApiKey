@@ -1,7 +1,8 @@
 package api;
 
+import api.handle.util.GetDigestUtil;
+import api.handle.util.NonceRandomUtil;
 import net.sf.json.JSONArray;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -18,37 +19,49 @@ import java.util.Map;
 /**
  * @Description:
  * @Author:苏晓雨
- * @Date: Created in 18-9-10 下午5:00
+ * @Date: Created in 18-9-12 下午5:12
  */
 
 public class UserRegisterClient {
     public static void main(String[] args) throws IOException {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/user/Register";
         String username = "sxy";
         String password = "123456";
-        byte[] tokenByte = Base64.encodeBase64((username+":"+password).getBytes());
-        String tokenStr = new String(tokenByte);
-        HttpPost httppost = new HttpPost(url);
-        httppost.setHeader("Content-type", "application/json; charset=utf-8");
-        httppost.setHeader("Authorization",tokenStr);
-        String id = "1";
-        String issuer= "sxy";
-        String subject= "Test somthing";
-        long ttlMillis=100000;
-        Map<Object, Object> map1 = new HashMap<>();
-        map1.put("Id", id);
-        map1.put("Issuer", issuer);
-        map1.put("Subject", subject);
-        map1.put("TtlMillis", ttlMillis);
-        JSONArray json = JSONArray.fromObject(map1);
+        String sex = "man";
+        String address = "baotou";
+        String email = "123456789@yahoo.com";
+        //等等
+        NonceRandomUtil nonceRandomUtil = new NonceRandomUtil();
+        String clientNonce = nonceRandomUtil.randomString(16);
+        System.out.println("clientNonce: "+clientNonce);
+        String uri = "/api/user/Register";
+        String reaml = "qwer";
+
+        Map<Object, Object> map = new HashMap<>();
+        map.put("username",username);
+        map.put("password",password);
+        map.put("sex",sex);
+        map.put("address",address);
+        map.put("email",email);
+        map.put("clientNonce",clientNonce);
+        map.put("uri",uri);
+        map.put("reaml",reaml);
+        JSONArray json = JSONArray.fromObject(map);
         StringEntity entity = new StringEntity(json.toString(), Charset.forName("UTF-8"));
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        String url = "http://localhost:8083/api/user/Register";
+        HttpPost httppost = new HttpPost(url);
+        GetDigestUtil getDigestUtil = new GetDigestUtil();
+        httppost.setHeader("Content-type", "application/json; charset=utf-8");
+        httppost.setHeader("Authorization",getDigestUtil.GetResponse(map));
+        System.out.println("Authorization: "+getDigestUtil.GetResponse(map));
         httppost.setEntity(entity);
         CloseableHttpResponse response = httpclient.execute(httppost);
         HttpEntity resEntity = response.getEntity();
         String a = EntityUtils.toString(resEntity, "UTF-8");
         System.out.println(a);
     }
+
+
 }

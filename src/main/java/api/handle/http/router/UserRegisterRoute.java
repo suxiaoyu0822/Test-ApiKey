@@ -1,15 +1,15 @@
 package api.handle.http.router;
 
-import api.handle.dto.ApiKey;
 import api.handle.dto.BodyJsonEntity;
-import api.handle.dto.JWTPayloadEntity;
-import api.handle.jwt.AboutJWT;
-import org.apache.commons.codec.binary.Base64;
+import api.handle.dto.UserEntity;
+import api.handle.util.GetDigestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Description:
@@ -22,26 +22,36 @@ public class UserRegisterRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        //用户注册，生成并返回API_KEY
         BodyJsonEntity bodyJsonEntity = new BodyJsonEntity();
-        String jwt =bodyJsonEntity.getHeaders(request,"Authorization",false);
-        JWTPayloadEntity jwtPayloadEntity = bodyJsonEntity.getBodyJsonEntity(JWTPayloadEntity.class,request);
-        String id = jwtPayloadEntity.getId();
-        String issuer= jwtPayloadEntity.getIssuer();
-        String subject= jwtPayloadEntity.getSubject();
-        long ttlMillis=jwtPayloadEntity.getTtlMillis();
-        LOGGER.info("Authorization: {}",jwt);
-        LOGGER.info("id: {} issuer: {} subject: {} ttlMillis: {}",id,issuer,subject,ttlMillis);
-        //验证用户名和密码
-        String info = new String(Base64.decodeBase64(jwt.getBytes()));
-        LOGGER.info("info: {}",info);
-
-        AboutJWT aboutJWT = new AboutJWT();
-        ApiKey apiKey = new ApiKey();
-        apiKey.setSecret("This is a mark.");
-        String identity_token =aboutJWT.createJWT(id,issuer,subject,ttlMillis,apiKey);
-        LOGGER.info("identity Token: {}",identity_token);
-
-        return identity_token;
+        String resp =bodyJsonEntity.getHeaders(request,"Authorization",false);
+        System.out.println("Authorization: "+resp);
+        UserEntity userEntity= bodyJsonEntity.getBodyJsonEntity(UserEntity.class,request);
+        String username = userEntity.getUsername();
+        String password = userEntity.getPassword();
+        String sex = userEntity.getMan();
+        String address = userEntity.getAddress();
+        String email = userEntity.getEmail();
+        String clientNonce = userEntity.getClientNonce();
+        System.out.println("clientNonce: "+clientNonce);
+        String uri = userEntity.getUri();
+        String reaml = userEntity.getReaml();
+        LOGGER.info("Authorization: {}",resp);
+        Map<Object, Object> map = new HashMap<>();
+        map.put("username",username);
+        map.put("password",password);
+        map.put("sex",sex);
+        map.put("address",address);
+        map.put("email",email);
+        map.put("clientNonce",clientNonce);
+        map.put("uri",uri);
+        map.put("reaml",reaml);
+        //验证用户名和密码是否正确
+        GetDigestUtil getDigestUtil = new GetDigestUtil();
+        String respOk = getDigestUtil.GetResponse(map);
+        System.out.println("AuthorizationOK:"+respOk);
+        if (!respOk.equals(resp)){
+            return "fail";
+        }
+        return "Success";
     }
 }

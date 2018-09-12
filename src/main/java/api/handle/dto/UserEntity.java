@@ -13,6 +13,42 @@ public class UserEntity {
     private String username;
     @SerializedName("password")
     private String password;
+    @SerializedName("man")
+    private String man;
+    @SerializedName("address")
+    private String address;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("clientNonce")
+    private String clientNonce;
+    @SerializedName("uri")
+    private String uri;
+    @SerializedName("reaml")
+    private String reaml;
+    public String getMan() {
+        return man;
+    }
+
+    public void setMan(String man) {
+        this.man = man;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     public String getUsername() {
         return username;
@@ -28,5 +64,29 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getClientNonce() {
+        return clientNonce;
+    }
+
+    public void setClientNonce(String clientNonce) {
+        this.clientNonce = clientNonce;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getReaml() {
+        return reaml;
+    }
+
+    public void setReaml(String reaml) {
+        this.reaml = reaml;
     }
 }
