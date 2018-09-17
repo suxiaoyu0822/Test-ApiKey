@@ -22,6 +22,7 @@ public class UserRegisterRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
+        //用户注册认证
         BodyJsonEntity bodyJsonEntity = new BodyJsonEntity();
         String resp =bodyJsonEntity.getHeaders(request,"Authorization",false);
         System.out.println("Authorization: "+resp);
