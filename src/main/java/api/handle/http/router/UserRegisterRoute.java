@@ -68,8 +68,10 @@ public class UserRegisterRoute implements Route {
         System.out.println("ou: "+ou);
         String sn= String.valueOf(map.get("username"));
         String cn= "test";
+        //等等
         ldap.connect();
         ldap.add(ou,sn,cn);
+        ldap.close();
         System.out.println("add ok!");
         return "Success";
     }
