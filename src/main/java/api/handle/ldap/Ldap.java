@@ -15,7 +15,9 @@ public interface Ldap
     void search(String para) throws NamingException;
     boolean updateNodes(String oldDN, String newDN) throws NamingException;
     boolean update(String employeeID, String dn) throws NamingException;
-    void add(String newUserName) throws NamingException;
+
+    void add(String ou, String sn, String cn) throws NamingException;
+
     void delete(String dn) throws NamingException;
     void close() throws NamingException;
 }

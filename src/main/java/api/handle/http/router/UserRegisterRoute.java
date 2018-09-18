@@ -2,7 +2,10 @@ package api.handle.http.router;
 
 import api.handle.dto.BodyJsonEntity;
 import api.handle.dto.UserEntity;
+import api.handle.ldap.Ldap;
+import api.handle.ldap.impl.LdapImpl;
 import api.handle.util.GetDigestUtil;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -19,6 +22,11 @@ import java.util.Map;
 
 public class UserRegisterRoute implements Route {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRegisterRoute.class);
+    private Ldap ldap;
+    @Inject
+    UserRegisterRoute(Ldap ldap){
+        this.ldap=ldap;
+    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
@@ -31,6 +39,7 @@ public class UserRegisterRoute implements Route {
         String password = userEntity.getPassword();
         String sex = userEntity.getMan();
         String address = userEntity.getAddress();
+        String organization = userEntity.getOrganization();
         String email = userEntity.getEmail();
         String clientNonce = userEntity.getClientNonce();
         System.out.println("clientNonce: "+clientNonce);
@@ -42,6 +51,7 @@ public class UserRegisterRoute implements Route {
         map.put("password",password);
         map.put("sex",sex);
         map.put("address",address);
+        map.put("organization",organization);
         map.put("email",email);
         map.put("clientNonce",clientNonce);
         map.put("uri",uri);
@@ -53,6 +63,14 @@ public class UserRegisterRoute implements Route {
         if (!respOk.equals(resp)){
             return "fail";
         }
+        //存储用户到ldap
+        String ou= String.valueOf(map.get("organization"));
+        System.out.println("ou: "+ou);
+        String sn= String.valueOf(map.get("username"));
+        String cn= "test";
+        ldap.connect();
+        ldap.add(ou,sn,cn);
+        System.out.println("add ok!");
         return "Success";
     }
 }

@@ -103,19 +103,19 @@ public class LdapImpl implements Ldap
         }
     }
     @Override
-    public boolean update(String inetOrgPerson, String dn) throws NamingException
+    public boolean update(String updt, String dn) throws NamingException
     {
         try {
             ModificationItem[] mods = new ModificationItem[1];
             /* 修改属性 */
-            // Attribute attr0 = new BasicAttribute("employeeID", "test");
-            // mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr0);
+             Attribute attr0 = new BasicAttribute("uid", updt);
+             mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr0);
             /* 删除属性 */
-            // Attribute attr0 = new BasicAttribute("description", "test");
-            // mods[0] = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attr0);
+//             Attribute attr0 = new BasicAttribute("description", updt);
+//             mods[0] = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attr0);
             /* 添加属性 */
-            Attribute attr0 = new BasicAttribute("cn", inetOrgPerson);
-            mods[0] = new ModificationItem(DirContext.ADD_ATTRIBUTE, attr0);
+//            Attribute attr0 = new BasicAttribute("description", updt);
+//            mods[0] = new ModificationItem(DirContext.ADD_ATTRIBUTE, attr0);
             /* 修改 */
             dc.modifyAttributes(dn + ",dc=example,dc=com", mods);
             return true;
@@ -127,17 +127,18 @@ public class LdapImpl implements Ldap
     }
 
     @Override
-    public void add(String newUserName) throws NamingException
+    public void add(String ou,String sn,String cn) throws NamingException
     {
-        String root = "dc=example,dc=com"; // LDAP的根节点的DC
+        String root = "dc=register,dc=com"; // LDAP的根节点的DC
         BasicAttributes attrs = new BasicAttributes();
-        attrs.put("ou",newUserName);
-        attrs.put("sn","23");
-        attrs.put("cn","24");
+        attrs.put("ou",ou);
+        attrs.put("sn",sn);
+        attrs.put("cn",cn);
         BasicAttribute objclassSet = new BasicAttribute("objectClass");
-        objclassSet.add("inetOrgPerson");
+        objclassSet.add("top");
+        objclassSet.add("organizationalPerson");
         attrs.put(objclassSet);
-        dc.createSubcontext("ou="+ newUserName + "," + root, attrs);
+        dc.createSubcontext("ou="+ ou + "," + root, attrs);
 
     }
 

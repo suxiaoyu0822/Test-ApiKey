@@ -18,13 +18,15 @@ public class TestLdap
         Ldap ldap=new LdapImpl();
         ldap.connect();
         try {
-            String username = "ook";
-            ldap.add(username);
-//            String old = "ou=sxy,";
+            String ou= "1";
+            String sn= "3";
+            String cn= "4";
+            ldap.add(ou,sn,cn);
+//            String old = "ou=ss,dc=example,dc=com";
 //            String neew = "ou=dd";
-//            ldap.update(old,neew);
-//            String s = "55";
-//            String dn = "ou=sxy";
+//            ldap.updateNodes(old,neew);
+//            String s = "123456";
+//            String dn = "ou=dd";
 //            ldap.update(s,dn);
 //            ldap.search(s);
 //            String dn = "ou=sxy,dc=example,dc=com";

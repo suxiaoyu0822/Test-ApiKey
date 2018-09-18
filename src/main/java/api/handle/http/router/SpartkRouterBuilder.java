@@ -1,5 +1,6 @@
 package api.handle.http.router;
 
+import api.handle.ldap.impl.LdapImpl;
 import api.handle.service.impl.ApiKeyServiceImpl;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -34,9 +35,10 @@ public class SpartkRouterBuilder extends AbstractSpartkRouterBuilder {
             post("/Authentication_method",new SelectAuthenticationMethodRoute());
         });
         path("/user", () -> {
+            LdapImpl ldap = new LdapImpl();
             post("/BasicRegister",new BasicUserRegisterRoute());
             post("/Digest",new DigestUserRegisterRoute());
-            post("/Register",new UserRegisterRoute());
+            post("/Register",new UserRegisterRoute(ldap));
         });
         path("/gateway", () -> {
             get("/judge",new GatewayJudgeAutographRoute());

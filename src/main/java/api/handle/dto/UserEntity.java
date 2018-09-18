@@ -17,6 +17,8 @@ public class UserEntity {
     private String man;
     @SerializedName("address")
     private String address;
+    @SerializedName("organization")
+    private String organization;
     @SerializedName("email")
     private String email;
     @SerializedName("clientNonce")
@@ -88,5 +90,13 @@ public class UserEntity {
 
     public void setReaml(String reaml) {
         this.reaml = reaml;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 }
