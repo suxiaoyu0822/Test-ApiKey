@@ -18,10 +18,14 @@ public class TestLdap
         Ldap ldap=new LdapImpl();
         ldap.connect();
         try {
-            String ou= "1";
-            String sn= "3";
-            String cn= "4";
-            ldap.add(ou,sn,cn);
+            String ou= "a";
+            String sn= "b";
+            String cn= "c";
+            String password = "d";
+            String address ="e";
+            String email = "f";
+            String company ="g";
+            ldap.add(ou,sn,cn,password,company,address,email);
 //            String old = "ou=ss,dc=example,dc=com";
 //            String neew = "ou=dd";
 //            ldap.updateNodes(old,neew);
@@ -29,7 +33,7 @@ public class TestLdap
 //            String dn = "ou=dd";
 //            ldap.update(s,dn);
 //            ldap.search(s);
-//            String dn = "ou=sxy,dc=example,dc=com";
+//            String dn = "ou=public,dc=register,dc=com";
 //            ldap.delete(dn);
         } finally {
             ldap.close();

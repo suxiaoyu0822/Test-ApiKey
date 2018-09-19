@@ -41,6 +41,7 @@ public class UserRegisterRoute implements Route {
         String address = userEntity.getAddress();
         String organization = userEntity.getOrganization();
         String email = userEntity.getEmail();
+        String company = userEntity.getCompany();
         String clientNonce = userEntity.getClientNonce();
         System.out.println("clientNonce: "+clientNonce);
         String uri = userEntity.getUri();
@@ -53,6 +54,7 @@ public class UserRegisterRoute implements Route {
         map.put("address",address);
         map.put("organization",organization);
         map.put("email",email);
+        map.put("company",company);
         map.put("clientNonce",clientNonce);
         map.put("uri",uri);
         map.put("reaml",reaml);
@@ -70,7 +72,7 @@ public class UserRegisterRoute implements Route {
         String cn= "test";
         //等等
         ldap.connect();
-        ldap.add(ou,sn,cn);
+        ldap.add(ou,sn,cn,password,company,address,email);
         ldap.close();
         System.out.println("add ok!");
         return "Success";

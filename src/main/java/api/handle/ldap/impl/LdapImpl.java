@@ -127,20 +127,25 @@ public class LdapImpl implements Ldap
     }
 
     @Override
-    public void add(String ou,String sn,String cn) throws NamingException
-    {
+    public void add(String ou, String sn, String cn,String password,String company,String address,String email) throws NamingException {
         String root = "dc=register,dc=com"; // LDAP的根节点的DC
         BasicAttributes attrs = new BasicAttributes();
-        attrs.put("ou",ou);
-        attrs.put("sn",sn);
-        attrs.put("cn",cn);
         BasicAttribute objclassSet = new BasicAttribute("objectClass");
         objclassSet.add("top");
         objclassSet.add("organizationalPerson");
+        objclassSet.add("inetOrgPerson");
+//        objclassSet.add("accout");
         attrs.put(objclassSet);
+        attrs.put("ou",ou);
+        attrs.put("sn",sn);
+        attrs.put("cn",cn);
+        attrs.put("userPassword",password);
+        attrs.put("organizationName",company);
+        attrs.put("localityName",address);
+        attrs.put("mail",email);
         dc.createSubcontext("ou="+ ou + "," + root, attrs);
-
     }
+
 
     @Override
     public void delete(String dn) throws NamingException

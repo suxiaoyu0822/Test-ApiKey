@@ -27,6 +27,8 @@ public class UserEntity {
     private String uri;
     @SerializedName("reaml")
     private String reaml;
+    @SerializedName("company")
+    private String company;
     public String getMan() {
         return man;
     }
@@ -98,5 +100,13 @@ public class UserEntity {
 
     public void setOrganization(String organization) {
         this.organization = organization;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

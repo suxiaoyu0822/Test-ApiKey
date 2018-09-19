@@ -24,11 +24,12 @@ import java.util.Map;
 
 public class UserRegisterClient {
     public static void main(String[] args) throws IOException {
-        String username = "lxj";
+        String username = "sxy";
         String password = "123456";
         String sex = "man";
         String address = "baotou";
-        String organization = "FireAlarm";
+        String organization = "Traffic Police";
+        String company = "anyun";
         String email = "123456789@yahoo.com";
         //等等
         NonceRandomUtil nonceRandomUtil = new NonceRandomUtil();
@@ -43,6 +44,7 @@ public class UserRegisterClient {
         map.put("sex",sex);
         map.put("address",address);
         map.put("organization",organization);
+        map.put("company",company);
         map.put("email",email);
         map.put("clientNonce",clientNonce);
         map.put("uri",uri);
