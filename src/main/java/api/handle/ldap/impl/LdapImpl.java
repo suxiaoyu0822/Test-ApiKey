@@ -51,7 +51,7 @@ public class LdapImpl implements Ldap
         // 设置搜索过滤条件
         String searchFilter = "cn=" + userName;
         // 设置搜索域节点
-        String searchBase = "DC=example,DC=COM";
+        String searchBase = "dc=register,dc=com";
         // 定制返回属性
         String returnedAtts[] = { "url", "whenChanged", "employeeID", "name", "userPrincipalName", "physicalDeliveryOfficeName", "departmentNumber", "telephoneNumber", "homePhone", "mobile", "department", "sAMAccountName", "whenChanged", "mail" };
         // 不定制属性，返回所有的属性集
@@ -70,7 +70,7 @@ public class LdapImpl implements Ldap
                             for (NamingEnumeration e = Attr.getAll(); e.hasMore(); totalResults++) {
                                 // 接受循环遍历读取的userPrincipalName用户属性
                                 String user = e.next().toString();
-                                System.out.println(user);
+                                System.out.println("---"+user);
                             }
                             // 读取属性值
 //                             Enumeration values = Attr.getAll();
@@ -90,7 +90,6 @@ public class LdapImpl implements Ldap
             System.err.println("Throw Exception : " + e);
         }
     }
-
     @Override
     public boolean updateNodes(String oldDN, String newDN) throws NamingException
     {
@@ -125,25 +124,65 @@ public class LdapImpl implements Ldap
             return false;
         }
     }
-
     @Override
-    public void add(String ou, String sn, String cn,String password,String company,String address,String email) throws NamingException {
-        String root = "dc=register,dc=com"; // LDAP的根节点的DC
+    public void addDC(String d) throws NamingException {
+        String root = "dc=com";// LDAP的根节点的DC
         BasicAttributes attrs = new BasicAttributes();
         BasicAttribute objclassSet = new BasicAttribute("objectClass");
         objclassSet.add("top");
-        objclassSet.add("organizationalPerson");
-        objclassSet.add("inetOrgPerson");
-//        objclassSet.add("accout");
+        objclassSet.add("dcObject");
+        objclassSet.add("organization");
+        attrs.put(objclassSet);
+        attrs.put("dc",d);
+        attrs.put("o",d);
+        dc.createSubcontext("dc="+d+","+root, attrs);
+    }
+
+    @Override
+    public void addO(String o) throws NamingException {
+        String root = "o="+o+",dc=registry,dc=baotoucloud,dc=com";
+//        String root = "o="+o+",dc=aa,dc=com";
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+        objclassSet.add("top");
+        objclassSet.add("organization");
+        attrs.put(objclassSet);
+        attrs.put("o",o);
+        dc.createSubcontext(root, attrs);
+        System.out.println("addO Success!");
+    }
+
+    @Override
+    public void addOU(String o, String ou) throws NamingException {
+        String root = "ou="+ou+",o="+o+",dc=registry,dc=baotoucloud,dc=com";
+//        String root = "ou="+ou+",o="+o+",dc=aa,dc=com";
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+        objclassSet.add("top");
+        objclassSet.add("organizationalUnit");
         attrs.put(objclassSet);
         attrs.put("ou",ou);
+        dc.createSubcontext(root, attrs);
+        System.out.println("addOU Success!");
+    }
+    @Override
+    public void addEntry(String o, String ou, String sn, String cn, String password, String company, String address, String email,String telephoneNumber) throws NamingException {
+        String root = "cn="+cn+",ou="+ou+",o="+o+",dc=registry,dc=baotoucloud,dc=com";
+//        String root = "cn="+cn+",ou="+ou+",o="+o+",dc=aa,dc=com";
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+        objclassSet.add("top");
+        objclassSet.add("inetOrgPerson");
+        attrs.put(objclassSet);
         attrs.put("sn",sn);
         attrs.put("cn",cn);
         attrs.put("userPassword",password);
-        attrs.put("organizationName",company);
-        attrs.put("localityName",address);
+        attrs.put("registeredAddress",company);
+        attrs.put("l",address);
+        attrs.put("telephoneNumber",telephoneNumber);
         attrs.put("mail",email);
-        dc.createSubcontext("ou="+ ou + "," + root, attrs);
+        dc.createSubcontext(root, attrs);
+        System.out.println("addEntry Success!");
     }
 
 
@@ -159,6 +198,33 @@ public class LdapImpl implements Ldap
     }
 
     @Override
+    public boolean isExistInLDAP(String rdn) throws NamingException {
+//        // 创建搜索控件
+//        SearchControls searchCtls = new SearchControls();
+//        // 设置搜索范围
+//        searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+//        // 设置搜索过滤条件
+//        String searchFilter =rdn;
+//        // 设置搜索域节点
+//        String searchBase = "dc=register,dc=com";
+//        NamingEnumeration answer = dc.search(searchBase,searchFilter,searchCtls);
+        boolean b=false;
+        try {
+            Attributes attrs = dc.getAttributes(rdn);
+            b=true;
+        }catch (Exception e){
+//            System.out.println(e);
+            b = false;
+        }
+//        while (answer.hasMoreElements()) {
+//            b=true;
+//            break;
+//        }
+
+        return b;
+    }
+
+    @Override
     public void close() throws NamingException
     {
         if (dc != null) {
@@ -169,6 +235,7 @@ public class LdapImpl implements Ldap
             }
         }
     }
+
 
 }
 

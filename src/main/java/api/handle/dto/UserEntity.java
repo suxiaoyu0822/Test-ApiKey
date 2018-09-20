@@ -17,8 +17,12 @@ public class UserEntity {
     private String man;
     @SerializedName("address")
     private String address;
+    @SerializedName("telephoneNumber")
+    private String telephoneNumber;
     @SerializedName("organization")
     private String organization;
+    @SerializedName("organizationalUnit")
+    private String organizationalUnit;
     @SerializedName("email")
     private String email;
     @SerializedName("clientNonce")
@@ -108,5 +112,21 @@ public class UserEntity {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getOrganizationalUnit() {
+        return organizationalUnit;
+    }
+
+    public void setOrganizationalUnit(String organizationalUnit) {
+        this.organizationalUnit = organizationalUnit;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 }

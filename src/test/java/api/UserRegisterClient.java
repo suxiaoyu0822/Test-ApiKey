@@ -28,7 +28,9 @@ public class UserRegisterClient {
         String password = "123456";
         String sex = "man";
         String address = "baotou";
-        String organization = "Traffic Police";
+        String telephoneNumber = "123456789";
+        String organization = "changshang";
+        String organizationalUnit="yanfabu";
         String company = "anyun";
         String email = "123456789@yahoo.com";
         //等等
@@ -43,7 +45,9 @@ public class UserRegisterClient {
         map.put("password",password);
         map.put("sex",sex);
         map.put("address",address);
+        map.put("telephoneNumber",telephoneNumber);
         map.put("organization",organization);
+        map.put("organizationalUnit",organizationalUnit);
         map.put("company",company);
         map.put("email",email);
         map.put("clientNonce",clientNonce);

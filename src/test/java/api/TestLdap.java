@@ -18,23 +18,40 @@ public class TestLdap
         Ldap ldap=new LdapImpl();
         ldap.connect();
         try {
-            String ou= "a";
-            String sn= "b";
-            String cn= "c";
-            String password = "d";
-            String address ="e";
-            String email = "f";
-            String company ="g";
-            ldap.add(ou,sn,cn,password,company,address,email);
+//            String o= "a";
+////            String o= null;
+//            String ou= "aa";
+//            String sn= "aaa";
+//            String cn= "aaaa";
+//            String password = "a";
+//            String address ="b";
+//            String email = "c";
+//            String company ="d";
+//            String telephoneNumber = "e";
+//
+////                ldap.addO(o);
+////                ldap.addOU(o,ou);
+//            ldap.addEntry(o,ou,sn,cn,password,address,email,company,telephoneNumber);
+
 //            String old = "ou=ss,dc=example,dc=com";
 //            String neew = "ou=dd";
 //            ldap.updateNodes(old,neew);
-//            String s = "123456";
-//            String dn = "ou=dd";
-//            ldap.update(s,dn);
+
+//            String s = "test";
 //            ldap.search(s);
-//            String dn = "ou=public,dc=register,dc=com";
+
+            LdapImpl ldap1 = new LdapImpl();
+//            String rdn= "o=FirePolice,dc=register,dc=com";
+//            String rdn= "o=s,dc=register,dc=com";
+//            String rdn= "ou=people,o=FirePolice,dc=register,dc=com";
+            String rdn= "ou=s,o=FirePolice,dc=register,dc=com";
+            ldap1.connect();
+            boolean b=ldap1.isExistInLDAP(rdn);
+            System.out.println(b);
+//            String dn = "o=FirePolice,dc=register,dc=com";
 //            ldap.delete(dn);
+//            String d= "ee";
+//            ldap.addDC(d);
         } finally {
             ldap.close();
         }

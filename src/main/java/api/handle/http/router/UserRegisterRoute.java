@@ -3,7 +3,6 @@ package api.handle.http.router;
 import api.handle.dto.BodyJsonEntity;
 import api.handle.dto.UserEntity;
 import api.handle.ldap.Ldap;
-import api.handle.ldap.impl.LdapImpl;
 import api.handle.util.GetDigestUtil;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -39,7 +38,9 @@ public class UserRegisterRoute implements Route {
         String password = userEntity.getPassword();
         String sex = userEntity.getMan();
         String address = userEntity.getAddress();
+        String telephoneNumber = userEntity.getTelephoneNumber();
         String organization = userEntity.getOrganization();
+        String organizationalUnit = userEntity.getOrganizationalUnit();
         String email = userEntity.getEmail();
         String company = userEntity.getCompany();
         String clientNonce = userEntity.getClientNonce();
@@ -66,13 +67,20 @@ public class UserRegisterRoute implements Route {
             return "fail";
         }
         //存储用户到ldap
-        String ou= String.valueOf(map.get("organization"));
-        System.out.println("ou: "+ou);
-        String sn= String.valueOf(map.get("username"));
-        String cn= "test";
+        String o=organization;
+        String ou=organizationalUnit;
+        String sn= username.substring(1);
+        String cn= username;
         //等等
         ldap.connect();
-        ldap.add(ou,sn,cn,password,company,address,email);
+        String dn = ",dc=registry,dc=baotoucloud,dc=com";
+        while (!ldap.isExistInLDAP("o="+o+dn)){
+            ldap.addO(o);
+        }
+        while (!ldap.isExistInLDAP("ou="+ou+",o="+o+dn)){
+            ldap.addOU(o,ou);
+        }
+        ldap.addEntry(o,ou,sn,cn,password,company,address,email,telephoneNumber);
         ldap.close();
         System.out.println("add ok!");
         return "Success";

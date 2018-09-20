@@ -16,9 +16,16 @@ public interface Ldap
     boolean updateNodes(String oldDN, String newDN) throws NamingException;
     boolean update(String employeeID, String dn) throws NamingException;
 
-    void add(String ou, String sn, String cn,String password,String company,String address,String email) throws NamingException;
+    void addDC(String d) throws NamingException;
+    void addO(String o) throws NamingException;
+    void addOU(String o, String ou) throws NamingException;
+
+    void addEntry(String o, String ou,String sn, String cn, String password, String company, String address, String email,String telephoneNumber) throws NamingException;
 
     void delete(String dn) throws NamingException;
+
+    boolean isExistInLDAP(String rdn) throws NamingException;
+
     void close() throws NamingException;
 }
 
