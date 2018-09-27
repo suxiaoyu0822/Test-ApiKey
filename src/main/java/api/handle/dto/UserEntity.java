@@ -33,6 +33,27 @@ public class UserEntity {
     private String reaml;
     @SerializedName("company")
     private String company;
+    @SerializedName("keyword")
+    private String keyword;
+    @SerializedName("newinfo")
+    private String newinfo;
+
+    public String getNewinfo() {
+        return newinfo;
+    }
+
+    public void setNewinfo(String newinfo) {
+        this.newinfo = newinfo;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     public String getMan() {
         return man;
     }

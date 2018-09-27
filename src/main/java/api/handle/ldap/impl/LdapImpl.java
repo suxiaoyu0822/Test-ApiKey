@@ -1,13 +1,16 @@
 package api.handle.ldap.impl;
 
+import antlr.collections.impl.Vector;
 import api.handle.ldap.Ldap;
+import net.sf.json.JSONObject;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 /**
  * @Description:
@@ -90,6 +93,32 @@ public class LdapImpl implements Ldap
             System.err.println("Throw Exception : " + e);
         }
     }
+
+    @Override
+    public List searchall(String para, String dn) throws NamingException
+    {
+        List list = new ArrayList();
+        SearchControls searchCtls=new SearchControls();
+        searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        String searchFilter="cn="+para;
+//        String returnedAttrs[]={"cn","sn","mail"};
+//        searchCtls.setReturningAttributes(returnedAttrs);
+        NamingEnumeration<SearchResult> entries=dc.search(dn, searchFilter, searchCtls);
+        while(entries.hasMoreElements()){
+            SearchResult entry=entries.next();
+            Attributes attrs=entry.getAttributes();
+            if(attrs!=null){
+//                for(NamingEnumeration<? extends Attribute> names=attrs.getAll();names.hasMore();){
+//                    Attribute attr=names.next();
+                    for(NamingEnumeration<?> e =attrs.getAll();e.hasMore();){
+                        list.add(e.next().toString());
+                    }
+//                }
+            }
+        }
+        return list;
+    }
+
     @Override
     public boolean updateNodes(String oldDN, String newDN) throws NamingException
     {
@@ -102,12 +131,12 @@ public class LdapImpl implements Ldap
         }
     }
     @Override
-    public boolean update(String updt, String dn) throws NamingException
+    public boolean update(String Keyword,String updt, String dn) throws NamingException
     {
         try {
             ModificationItem[] mods = new ModificationItem[1];
             /* 修改属性 */
-             Attribute attr0 = new BasicAttribute("uid", updt);
+             Attribute attr0 = new BasicAttribute(Keyword,updt);
              mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr0);
             /* 删除属性 */
 //             Attribute attr0 = new BasicAttribute("description", updt);
@@ -116,7 +145,7 @@ public class LdapImpl implements Ldap
 //            Attribute attr0 = new BasicAttribute("description", updt);
 //            mods[0] = new ModificationItem(DirContext.ADD_ATTRIBUTE, attr0);
             /* 修改 */
-            dc.modifyAttributes(dn + ",dc=example,dc=com", mods);
+            dc.modifyAttributes(dn, mods);
             return true;
         } catch (NamingException e) {
             e.printStackTrace();
@@ -235,7 +264,5 @@ public class LdapImpl implements Ldap
             }
         }
     }
-
-
 }
 

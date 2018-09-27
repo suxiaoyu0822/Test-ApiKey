@@ -1,5 +1,8 @@
 package api.handle.http.router;
 
+import api.handle.http.router.manage.ManageOrganizationRoute;
+import api.handle.http.router.manage.ManageOrganizationalUnitRoute;
+import api.handle.http.router.manage.ManageUserRoute;
 import api.handle.ldap.impl.LdapImpl;
 import api.handle.service.impl.ApiKeyServiceImpl;
 import com.google.inject.Inject;
@@ -42,6 +45,12 @@ public class SpartkRouterBuilder extends AbstractSpartkRouterBuilder {
         });
         path("/gateway", () -> {
             get("/judge",new GatewayJudgeAutographRoute());
+        });
+        path("/manage", () -> {
+            LdapImpl ldap = new LdapImpl();
+            post("/organization",new ManageOrganizationRoute(ldap));
+            post("/organizationalUnit",new ManageOrganizationalUnitRoute(ldap));
+            post("/user",new ManageUserRoute(ldap));
         });
     }
 }

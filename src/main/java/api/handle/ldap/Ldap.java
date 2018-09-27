@@ -1,6 +1,7 @@
 package api.handle.ldap;
 
 import javax.naming.NamingException;
+import java.util.List;
 
 /**
  * @Description:
@@ -13,8 +14,11 @@ public interface Ldap
 
     void connect() throws NamingException;
     void search(String para) throws NamingException;
+
+    List searchall(String para, String dn) throws NamingException;
+
     boolean updateNodes(String oldDN, String newDN) throws NamingException;
-    boolean update(String employeeID, String dn) throws NamingException;
+    boolean update(String Keyword,String updt, String dn) throws NamingException;
 
     void addDC(String d) throws NamingException;
     void addO(String o) throws NamingException;
