@@ -29,8 +29,8 @@ public class UserRegisterClient {
         String sex = "man";
         String address = "baotou";
         String telephoneNumber = "123456789";
-        String organization = "guanlizu";
-        String organizationalUnit="shenpizu";
+        String organization = "gongan";
+        String organizationalUnit="kejichu";
         String company = "anyun";
         String email = "123456789@yahoo.com";
         //等等

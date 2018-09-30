@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Description:
+ * @Description:用户信息管理
  * @Author:苏晓雨
  * @Date: Created in 18-9-26 下午3:26
  */
