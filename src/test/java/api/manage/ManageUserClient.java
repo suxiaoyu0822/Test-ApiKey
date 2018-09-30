@@ -58,7 +58,6 @@ public class ManageUserClient {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         String url = "http://localhost:8083/api/manage/user";
         HttpPost httppost = new HttpPost(url);
-        GetDigestUtil getDigestUtil = new GetDigestUtil();
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setEntity(entity);
         CloseableHttpResponse response = httpclient.execute(httppost);
