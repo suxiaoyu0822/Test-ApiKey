@@ -25,20 +25,22 @@ import java.util.Map;
 public class ManageOrganizationClient {
 
     public static void main(String[] args) throws IOException {
-        //创建-创建组织、删除-删除组织、修改-修改组织、其他-操作失败
-        String handle = "创建";
-        String oldorganization = "jiaojing";
+        String oldorganization = "zhengfu";
         String neworganization = "xinjiaojing";
+        String dn = "dc=registry,dc=baotoucloud,dc=com";
         Map<Object, Object> map = new HashMap<>();
-        map.put("handle",handle);
         map.put("oldorganization",oldorganization);
         map.put("neworganization",neworganization);
+        map.put("dn",dn);
         JSONArray json = JSONArray.fromObject(map);
         StringEntity entity = new StringEntity(json.toString(), Charset.forName("UTF-8"));
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/manage/organization";
+//        String url = "http://localhost:8083/api/manage/AddO";
+//        String url = "http://localhost:8083/api/manage/DeletO";
+//        String url = "http://localhost:8083/api/manage/UpdataO";
+        String url = "http://localhost:8083/api/manage/SearchO";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setEntity(entity);

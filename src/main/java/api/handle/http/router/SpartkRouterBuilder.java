@@ -1,8 +1,6 @@
 package api.handle.http.router;
 
-import api.handle.http.router.manage.ManageOrganizationRoute;
-import api.handle.http.router.manage.ManageOrganizationalUnitRoute;
-import api.handle.http.router.manage.ManageUserRoute;
+import api.handle.http.router.manage.*;
 import api.handle.ldap.impl.LdapImpl;
 import api.handle.service.impl.ApiKeyServiceImpl;
 import com.google.inject.Inject;
@@ -48,9 +46,20 @@ public class SpartkRouterBuilder extends AbstractSpartkRouterBuilder {
         });
         path("/manage", () -> {
             LdapImpl ldap = new LdapImpl();
-            post("/organization",new ManageOrganizationRoute(ldap));
-            post("/organizationalUnit",new ManageOrganizationalUnitRoute(ldap));
-            post("/user",new ManageUserRoute(ldap));
+            post("/AddO",new ManageAddOrganizationRoute(ldap));
+            post("/DeletO",new ManageDeletOrganizationRoute(ldap));
+            post("/UpdataO",new ManageUpdataOrganizationRoute(ldap));
+            post("/SearchO",new ManageSearchOrganizationRoute(ldap));
+            post("/AddOU",new ManageAddOrganizationalUnitRoute(ldap));
+            post("/DeletOU",new ManageDeletOrganizationalUnitRoute(ldap));
+            post("/UpdataOU",new ManageUpdataOrganizationalUnitRoute(ldap));
+            post("/SearchOU",new ManageSearchOrganizationalUnitRoute(ldap));
+            post("/AddUser",new ManageAddUserRoute(ldap));
+            post("/DeletUser",new ManageDeletUserRoute(ldap));
+            post("/UpdataUser",new ManageUpdataUserRoute(ldap));
+            post("/SearchUser",new ManageSearchUserRoute(ldap));
+            post("/MoveUser",new ManageMoveUserRoute(ldap));
+            post("/QuoteUser",new ManageQuoteUserRoute(ldap));
         });
     }
 }

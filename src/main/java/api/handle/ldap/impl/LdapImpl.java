@@ -1,8 +1,6 @@
 package api.handle.ldap.impl;
 
-import antlr.collections.impl.Vector;
 import api.handle.ldap.Ldap;
-import net.sf.json.JSONObject;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -99,7 +97,8 @@ public class LdapImpl implements Ldap
     {
         List list = new ArrayList();
         SearchControls searchCtls=new SearchControls();
-        searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+//        searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
         String searchFilter="cn="+para;
 //        String returnedAttrs[]={"cn","sn","mail"};
 //        searchCtls.setReturningAttributes(returnedAttrs);
@@ -118,7 +117,86 @@ public class LdapImpl implements Ldap
         }
         return list;
     }
+    @Override
+    public String searchDescription(String cn, String dn) throws NamingException
+    {
+        String description = null;
+        SearchControls searchCtls=new SearchControls();
+        searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
+        String searchFilter="cn="+cn;
+        String returnedAttrs[]={"description"};
+        searchCtls.setReturningAttributes(returnedAttrs);
+        NamingEnumeration<SearchResult> entries=dc.search(dn, searchFilter, searchCtls);
+        while(entries.hasMoreElements()){
+            SearchResult entry=entries.next();
+            Attributes attrs=entry.getAttributes();
+            if(attrs!=null){
+                for(NamingEnumeration<? extends Attribute> names=attrs.getAll();names.hasMore();){
+                    Attribute attr=names.next();
+                for(NamingEnumeration<?> e =attr.getAll();e.hasMore();){
+                    description=e.next().toString();
+                }
+                }
+            }
+        }
+        return description;
+    }
 
+    @Override
+    public String searchOne(String cn, String dn,String ret) throws NamingException
+    {
+        String one = null;
+        SearchControls searchCtls=new SearchControls();
+        searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
+        String searchFilter="cn="+cn;
+        String returnedAttrs[]={ret};
+        searchCtls.setReturningAttributes(returnedAttrs);
+        NamingEnumeration<SearchResult> entries=dc.search(dn, searchFilter, searchCtls);
+        while(entries.hasMoreElements()){
+            SearchResult entry=entries.next();
+            Attributes attrs=entry.getAttributes();
+            if(attrs!=null){
+                for(NamingEnumeration<? extends Attribute> names=attrs.getAll();names.hasMore();){
+                    Attribute attr=names.next();
+                    for(NamingEnumeration<?> e =attr.getAll();e.hasMore();){
+                        one=e.next().toString();
+                    }
+                }
+            }
+        }
+        return one;
+    }
+    @Override
+    public List searchForAttribut(String Attribut,String dn) throws NamingException
+    {
+        List list = new ArrayList();
+        String description = null;
+        SearchControls searchCtls=new SearchControls();
+        //对应当前查询的一个OBJECT节点
+//        searchCtls.setSearchScope(SearchControls.OBJECT_SCOPE);
+        //对应当前节点的下1级(仅仅1级)节点
+        searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
+        //对应当前节点的所有子节点
+//        searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        String searchFilter="objectClass=*";
+        String returnedAttrs[]={Attribut};
+        searchCtls.setReturningAttributes(returnedAttrs);
+        NamingEnumeration<SearchResult> entries=dc.search(dn,searchFilter,searchCtls);
+        while(entries.hasMoreElements()){
+            SearchResult entry=entries.next();
+            Attributes attrs=entry.getAttributes();
+            if(attrs!=null){
+                for(NamingEnumeration<? extends Attribute> names=attrs.getAll();names.hasMore();){
+                    Attribute attr=names.next();
+                    for(NamingEnumeration<?> e =attr.getAll();e.hasMore();){
+                        description=e.next().toString();
+                        list.add(description);
+                    }
+                }
+            }
+        }
+        return list;
+    }
     @Override
     public boolean updateNodes(String oldDN, String newDN) throws NamingException
     {
@@ -195,7 +273,17 @@ public class LdapImpl implements Ldap
         System.out.println("addOU Success!");
     }
     @Override
-    public void addEntry(String o, String ou, String sn, String cn, String password, String company, String address, String email,String telephoneNumber) throws NamingException {
+    public void addOUDN(String dn) throws NamingException {
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+        objclassSet.add("top");
+        objclassSet.add("organizationalUnit");
+        attrs.put(objclassSet);
+        dc.createSubcontext(dn, attrs);
+        System.out.println("addOU Success!");
+    }
+    @Override
+    public void addEntry(String o, String ou, String sn, String cn, String password, String company, String address, String email,String telephoneNumber, String description) throws NamingException {
         String root = "cn="+cn+",ou="+ou+",o="+o+",dc=registry,dc=baotoucloud,dc=com";
 //        String root = "cn="+cn+",ou="+ou+",o="+o+",dc=aa,dc=com";
         BasicAttributes attrs = new BasicAttributes();
@@ -210,10 +298,44 @@ public class LdapImpl implements Ldap
         attrs.put("l",address);
         attrs.put("telephoneNumber",telephoneNumber);
         attrs.put("mail",email);
+        attrs.put("description",description);
         dc.createSubcontext(root, attrs);
         System.out.println("addEntry Success!");
     }
-
+    @Override
+    public void addDNEntry(String dn, String sn, String cn, String password, String company, String address, String email, String telephoneNumber, String description) throws NamingException {
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+        objclassSet.add("top");
+        objclassSet.add("inetOrgPerson");
+        attrs.put(objclassSet);
+        attrs.put("sn",sn);
+        attrs.put("cn",cn);
+        attrs.put("userPassword",password);
+        attrs.put("registeredAddress",company);
+        attrs.put("l",address);
+        attrs.put("telephoneNumber",telephoneNumber);
+        attrs.put("mail",email);
+        attrs.put("description",description);
+        dc.createSubcontext("cn="+cn+","+dn, attrs);
+        System.out.println("addEntry Success!");
+    }
+    @Override
+    public void addUidEntry(String dn, String sn, String cn, String password, String uid,String description) throws NamingException {
+//        String root = "cn="+cn+",ou="+ou+",o="+o+",dc=aa,dc=com";
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+        objclassSet.add("top");
+        objclassSet.add("inetOrgPerson");
+        attrs.put(objclassSet);
+        attrs.put("sn",sn);
+        attrs.put("cn",cn);
+        attrs.put("userPassword",password);
+        attrs.put("description",description);
+        attrs.put("uid",uid);
+        dc.createSubcontext("cn="+cn+","+dn, attrs);
+        System.out.println("addEntry Success!");
+    }
 
     @Override
     public void delete(String dn) throws NamingException
@@ -253,6 +375,25 @@ public class LdapImpl implements Ldap
         return b;
     }
 
+    @Override
+    public boolean isExistInAttr(String dn) throws NamingException {
+        boolean b=false;
+        SearchControls searchCtls=new SearchControls();
+        searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
+        String searchFilter="cn=lxj";
+        NamingEnumeration<SearchResult> entries=dc.search(dn, searchFilter, searchCtls);
+        while(entries.hasMoreElements()){
+            try {
+                SearchResult entry=entries.next();
+                b=true;
+            } catch (NamingException e) {
+//                e.printStackTrace();
+                b=false;
+            }
+
+        }
+        return b;
+    }
     @Override
     public void close() throws NamingException
     {

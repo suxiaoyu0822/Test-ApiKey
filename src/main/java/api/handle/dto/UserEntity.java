@@ -25,6 +25,8 @@ public class UserEntity {
     private String organizationalUnit;
     @SerializedName("email")
     private String email;
+    @SerializedName("description")
+    private String description;
     @SerializedName("clientNonce")
     private String clientNonce;
     @SerializedName("uri")
@@ -37,6 +39,34 @@ public class UserEntity {
     private String keyword;
     @SerializedName("newinfo")
     private String newinfo;
+    @SerializedName("uid")
+    private String uid;
+    @SerializedName("dn")
+    private String dn;
+
+    public String getDn() {
+        return dn;
+    }
+
+    public void setDn(String dn) {
+        this.dn = dn;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getNewinfo() {
         return newinfo;

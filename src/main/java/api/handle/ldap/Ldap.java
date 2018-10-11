@@ -17,6 +17,12 @@ public interface Ldap
 
     List searchall(String para, String dn) throws NamingException;
 
+    String searchDescription(String para, String dn) throws NamingException;
+
+    String searchOne(String cn, String dn, String ret) throws NamingException;
+
+    List searchForAttribut(String Attribut, String dn) throws NamingException;
+
     boolean updateNodes(String oldDN, String newDN) throws NamingException;
     boolean update(String Keyword,String updt, String dn) throws NamingException;
 
@@ -24,11 +30,19 @@ public interface Ldap
     void addO(String o) throws NamingException;
     void addOU(String o, String ou) throws NamingException;
 
-    void addEntry(String o, String ou,String sn, String cn, String password, String company, String address, String email,String telephoneNumber) throws NamingException;
+    void addOUDN(String dn) throws NamingException;
+
+    void addEntry(String o, String ou, String sn, String cn, String password, String company, String address, String email, String telephoneNumber, String description) throws NamingException;
+
+    void addDNEntry(String dn, String sn, String cn, String password, String company, String address, String email, String telephoneNumber, String description) throws NamingException;
+
+    void addUidEntry(String dn, String sn, String cn, String password, String uid, String description) throws NamingException;
 
     void delete(String dn) throws NamingException;
 
     boolean isExistInLDAP(String rdn) throws NamingException;
+
+    boolean isExistInAttr(String dn) throws NamingException;
 
     void close() throws NamingException;
 }

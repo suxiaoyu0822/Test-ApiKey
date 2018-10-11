@@ -23,22 +23,24 @@ import java.util.Map;
 
 public class ManageOrganizationalUnitClient {
     public static void main(String[] args) throws IOException {
-        //创建-创建组织单元、删除-删除组织单元、修改-修改组织单元-其他-操作失败
-        String handle = "创建";
-        String oldorganization = "jiaojing";
-        String oldorganizationalUnit="zhiqinzu";
+        String oldorganization = "zhengfu";
+        String oldorganizationalUnit="zuzhibu";
         String neworganizationalUnit="xunluozu";
+        String dn="ou=xunluozu,o=jiaojing,dc=registry,dc=baotoucloud,dc=com";
         Map<Object, Object> map = new HashMap<>();
-        map.put("handle",handle);
         map.put("oldorganization",oldorganization);
         map.put("oldorganizationalUnit",oldorganizationalUnit);
         map.put("neworganizationalUnit",neworganizationalUnit);
+        map.put("dn",dn);
         JSONArray json = JSONArray.fromObject(map);
         StringEntity entity = new StringEntity(json.toString(), Charset.forName("UTF-8"));
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/manage/organizationalUnit";
+//        String url = "http://localhost:8083/api/manage/AddOU";
+//        String url = "http://localhost:8083/api/manage/DeletOU";
+//        String url = "http://localhost:8083/api/manage/UpdataOU";
+        String url = "http://localhost:8083/api/manage/SearchOU";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setEntity(entity);

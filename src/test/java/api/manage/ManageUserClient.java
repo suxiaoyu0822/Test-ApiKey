@@ -23,22 +23,24 @@ import java.util.Map;
 
 public class ManageUserClient {
     public static void main(String[] args) throws IOException {
-        //创建-创建用户、删除-删除用户、修改-修改用户、移动-移动用户、引用-引用用户到其他组
-        String handle = "引用";
-        String oldorganization = "gongan";
-        String oldorganizationalUnit="yanfabu";
+        String oldorganization = "jiaojing";
+        String oldorganizationalUnit="xunluozu";
         String neworganization = "jiaojing";
         String neworganizationalUnit = "zhiqinzu";
         String keyword = "sn";
         String newinfo = "ggggggg";
-        String username = "jpc";
+        String username = "lxj";
         String password = "123456";
         String address = "baotou";
         String telephoneNumber = "123456789";
         String company = "anyun";
         String email = "123456789@yahoo.com";
+        String uid="cn=sxy,ou=shenpizu,o=guanlizu,dc=registry,dc=baotoucloud,dc=com";
+        String dn = "ou=keyuan,ou=zuzhibu,o=zhengfu,dc=registry,dc=baotoucloud,dc=com";
+        String description = "empty";
+//        String description = "BeQuote";
+//        String description = "Quote";
         Map<Object, Object> map = new HashMap<>();
-        map.put("handle",handle);
         map.put("username",username);
         map.put("password",password);
         map.put("address",address);
@@ -51,12 +53,20 @@ public class ManageUserClient {
         map.put("keyword",keyword);
         map.put("company",company);
         map.put("email",email);
+        map.put("description",description);
+        map.put("uid",uid);
+        map.put("dn",dn);
         JSONArray json = JSONArray.fromObject(map);
         StringEntity entity = new StringEntity(json.toString(), Charset.forName("UTF-8"));
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/manage/user";
+//        String url = "http://localhost:8083/api/manage/AddUser";
+//        String url = "http://localhost:8083/api/manage/DeletUser";
+//        String url = "http://localhost:8083/api/manage/UpdataUser";
+        String url = "http://localhost:8083/api/manage/SearchUser";
+//        String url = "http://localhost:8083/api/manage/MoveUser";
+//        String url = "http://localhost:8083/api/manage/QuoteUser";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setEntity(entity);

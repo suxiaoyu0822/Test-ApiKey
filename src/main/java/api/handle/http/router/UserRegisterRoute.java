@@ -80,7 +80,7 @@ public class UserRegisterRoute implements Route {
         while (!ldap.isExistInLDAP("ou="+ou+",o="+o+dn)){
             ldap.addOU(o,ou);
         }
-        ldap.addEntry(o,ou,sn,cn,password,company,address,email,telephoneNumber);
+//        ldap.addEntry(o,ou,sn,cn,password,company,address,email,telephoneNumber);
         ldap.close();
         System.out.println("add ok!");
         return "Success";
