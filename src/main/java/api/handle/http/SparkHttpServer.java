@@ -26,7 +26,7 @@ public class SparkHttpServer implements HttpServer {
         port(configuration.getHttpPort());
         int maxThreads = 20;
         int minThreads = 5;
-        int timeOutMillis = 30000;
+        int timeOutMillis = 30000000;
         threadPool(maxThreads, minThreads, timeOutMillis);
         routerBuilder.build();
         awaitInitialization();

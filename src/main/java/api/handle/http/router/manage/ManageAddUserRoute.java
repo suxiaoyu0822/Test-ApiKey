@@ -5,12 +5,18 @@ import api.handle.dto.OrganizationEntity;
 import api.handle.dto.UserEntity;
 import api.handle.ldap.Ldap;
 import api.handle.ldap.impl.LdapImpl;
+import api.handle.util.ReturnJson;
 import com.google.inject.Inject;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+
+import javax.naming.NamingException;
+import java.util.Date;
 
 /**
  * @Description:
@@ -27,23 +33,39 @@ public class ManageAddUserRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public JSON handle(Request request, Response response) throws Exception {
         BodyJsonEntity bodyJsonEntity = new BodyJsonEntity();
         UserEntity userEntity= bodyJsonEntity.getBodyJsonEntity(UserEntity.class,request);
-        String username = userEntity.getUsername();
-        String password = userEntity.getPassword();
-        String address = userEntity.getAddress();
+        String cn = userEntity.getCn();
+        String password = userEntity.getUserPassword();
         String telephoneNumber = userEntity.getTelephoneNumber();
-        String email = userEntity.getEmail();
+        String email = userEntity.getMail();
         String description = userEntity.getDescription();
-        String company = userEntity.getCompany();
         String dn =userEntity.getDn();
+        Date date = new Date();
+        String uid= String.valueOf(date.getTime());
+        String givenName =userEntity.getGivenName();
+        String employeeType =userEntity.getEmployeeType();
+        System.out.println("employeeType:"+employeeType);
+        String initials = "empty";
+        System.out.println("-----------------------------------创建用户-----------------------------------");
+
         ldap.connect();
-        System.out.println("创建用户");
-        String sn = username.substring(1);
-        ldap.addDNEntry(dn,sn,username,password,company,address,email,telephoneNumber,description);
+        String sn = cn.substring(0,1);
+
+
+        try {
+            ldap.addDNEntry(dn,uid,sn,cn,password,givenName,employeeType,initials,email,telephoneNumber,description);
+        } catch (NamingException e) {
+            e.printStackTrace();
+            String string = "添加用户失败,请重新操作！";
+            JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            return jsonObject;
+        }
         System.out.println("[成功添加用户]");
         ldap.close();
-        return "成功添加用户";
+        String string = "成功添加用户";
+        JSONObject jsonObject = ReturnJson.ReturnSuccessJson(string);
+        return jsonObject;
     }
 }

@@ -1,7 +1,5 @@
-package api;
+package api.manage;
 
-import api.handle.util.GetDigestUtil;
-import api.handle.util.NonceRandomUtil;
 import net.sf.json.JSONArray;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -19,57 +17,58 @@ import java.util.Map;
 /**
  * @Description:
  * @Author:苏晓雨
- * @Date: Created in 18-9-12 下午5:12
+ * @Date: Created in 18-10-31 下午5:52
  */
 
-public class UserRegisterClient {
+public class ManageUserMoveUpdataClient {
     public static void main(String[] args) throws IOException {
-        String username = "sxy";
+        String username = "局长";
+//        String username = "苏晓雨";
+//        String username = "吕献军";
+//        String username = "金鹏程";
         String password = "123456";
-        String sex = "man";
-        String address = "baotou";
-        String telephoneNumber = "123456789";
-        String organization = "gongan";
-        String organizationalUnit="kejichu";
-        String company = "anyun";
+        String givenName = "通信一组";
+//        String employeeType = "管理员";
+        char[] e = {'a','b'};
+        String employeeType = new String(e);
+        String telephoneNumber = "13122223333";
         String email = "123456789@yahoo.com";
-        //等等
-        NonceRandomUtil nonceRandomUtil = new NonceRandomUtil();
-        String clientNonce = nonceRandomUtil.randomString(16);
-        System.out.println("clientNonce: "+clientNonce);
-        String uri = "/api/user/Register";
-        String reaml = "qwer";
-
+        String initials = "empty";
+//        String initials = "Quote";
+//        String initials = "BeQuote";
+        String postalAddress="cn=苏晓雨,ou=科技一组,ou=科技处,o=公安,dc=registry,dc=baotoucloud,dc=com";
+//        String dn = "ou=运维二组,ou=运维组,o=管理组,dc=registry,dc=baotoucloud,dc=com";
+        String dn = "uid=1540973070245,ou=通信一组,ou=通信处,o=公安,dc=registry,dc=baotoucloud,dc=com";
+        String newdn = "ou=研发一组,ou=研发组,o=厂商,dc=registry,dc=baotoucloud,dc=com";
+        String description = "我是备注";
         Map<Object, Object> map = new HashMap<>();
         map.put("username",username);
         map.put("password",password);
-        map.put("sex",sex);
-        map.put("address",address);
+        map.put("givenName",givenName);
+        map.put("employeeType",employeeType);
         map.put("telephoneNumber",telephoneNumber);
-        map.put("organization",organization);
-        map.put("organizationalUnit",organizationalUnit);
-        map.put("company",company);
         map.put("email",email);
-        map.put("clientNonce",clientNonce);
-        map.put("uri",uri);
-        map.put("reaml",reaml);
+        map.put("initials",initials);
+        map.put("postalAddress",postalAddress);
+        map.put("description",description);
+        map.put("dn",dn);
+        map.put("newdn",newdn);
+
         JSONArray json = JSONArray.fromObject(map);
         StringEntity entity = new StringEntity(json.toString(), Charset.forName("UTF-8"));
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/user/Register";
+
+        String url = "http://localhost:8083/api/manage/MoveUpdata";
+
         HttpPost httppost = new HttpPost(url);
-        GetDigestUtil getDigestUtil = new GetDigestUtil();
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
-        httppost.setHeader("Authorization",getDigestUtil.GetResponse(map));
-        System.out.println("Authorization: "+getDigestUtil.GetResponse(map));
         httppost.setEntity(entity);
         CloseableHttpResponse response = httpclient.execute(httppost);
         HttpEntity resEntity = response.getEntity();
         String a = EntityUtils.toString(resEntity, "UTF-8");
+//        JSONObject a = JSONObject.fromObject(resEntity);
         System.out.println(a);
     }
-
-
 }

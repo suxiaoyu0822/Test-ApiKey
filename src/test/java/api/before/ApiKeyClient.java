@@ -1,4 +1,4 @@
-package api;
+package api.before;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;

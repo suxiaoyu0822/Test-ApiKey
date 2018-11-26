@@ -3,6 +3,7 @@ package api.manage;
 import api.handle.util.GetDigestUtil;
 import api.handle.util.NonceRandomUtil;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class ManageOrganizationClient {
 
     public static void main(String[] args) throws IOException {
-        String oldorganization = "zhengfu";
+        String oldorganization = "管理组";
         String neworganization = "xinjiaojing";
         String dn = "dc=registry,dc=baotoucloud,dc=com";
         Map<Object, Object> map = new HashMap<>();
@@ -37,16 +38,17 @@ public class ManageOrganizationClient {
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-//        String url = "http://localhost:8083/api/manage/AddO";
+        String url = "http://localhost:8083/api/manage/AddO";
 //        String url = "http://localhost:8083/api/manage/DeletO";
 //        String url = "http://localhost:8083/api/manage/UpdataO";
-        String url = "http://localhost:8083/api/manage/SearchO";
+//        String url = "http://localhost:8083/api/manage/SearchO";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setEntity(entity);
         CloseableHttpResponse response = httpclient.execute(httppost);
         HttpEntity resEntity = response.getEntity();
         String a = EntityUtils.toString(resEntity, "UTF-8");
+//        JSONObject a = JSONObject.fromObject(resEntity);
         System.out.println(a);
     }
 }

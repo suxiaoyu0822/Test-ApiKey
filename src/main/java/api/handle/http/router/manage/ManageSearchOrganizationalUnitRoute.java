@@ -5,14 +5,20 @@ import api.handle.dto.OrganizationEntity;
 import api.handle.dto.UserEntity;
 import api.handle.ldap.Ldap;
 import api.handle.ldap.impl.LdapImpl;
+import api.handle.util.ReturnJson;
 import com.google.inject.Inject;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import javax.naming.NamingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -29,17 +35,35 @@ public class ManageSearchOrganizationalUnitRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public JSON handle(Request request, Response response) throws Exception {
         BodyJsonEntity bodyJsonEntity = new BodyJsonEntity();
         UserEntity userEntity= bodyJsonEntity.getBodyJsonEntity(UserEntity.class,request);
         String dn = userEntity.getDn();
+        System.out.println("-----------------------------------查询组织o下的ou-----------------------------------");
+
         ldap.connect();
-        System.out.println("查询组织o下的ou");
         String Attribut = "ou";
-        List list=ldap.searchForAttribut(Attribut,dn);
-        for (int i=0;i<list.size();i++) {
-            System.out.println(list.get(i));
+        List list= null;
+        String value = null;
+        Map<String,String> map = new HashMap<>();
+        try {
+            list = ldap.searchForAttribut(Attribut,dn);
+        } catch (NamingException e) {
+            e.printStackTrace();
+            String string = "查询组织单元失败,请重新操作！";
+            System.out.println(string);
+            JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            return jsonObject;
         }
-        return list.toString();
+        for (int i=0;i<list.size();i++) {
+            value = String.valueOf(list.get(i));
+            map.put("ou"+i,value);
+        }
+        System.out.println("查询组织单元成功！");
+        map.put("number", String.valueOf(map.size()));
+        System.out.println(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
+        System.out.println(jsonObject);
+        return jsonObject;
     }
 }

@@ -1,4 +1,4 @@
-package api;
+package api.before;
 
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;

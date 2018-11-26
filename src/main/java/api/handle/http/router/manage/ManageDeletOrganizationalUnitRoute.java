@@ -2,9 +2,13 @@ package api.handle.http.router.manage;
 
 import api.handle.dto.BodyJsonEntity;
 import api.handle.dto.OrganizationEntity;
+import api.handle.dto.UserEntity;
 import api.handle.ldap.Ldap;
 import api.handle.ldap.impl.LdapImpl;
+import api.handle.util.ReturnJson;
 import com.google.inject.Inject;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -26,23 +30,25 @@ public class ManageDeletOrganizationalUnitRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public JSON handle(Request request, Response response) throws Exception {
         BodyJsonEntity bodyJsonEntity = new BodyJsonEntity();
-        OrganizationEntity organizationEntity= bodyJsonEntity.getBodyJsonEntity(OrganizationEntity.class,request);
-        String oldorganization = organizationEntity.getOldorganization();
-        String oldorganizationalUnit = organizationEntity.getOldorganizationalUnit();
-        String dn = ",dc=registry,dc=baotoucloud,dc=com";
+        UserEntity userEntity= bodyJsonEntity.getBodyJsonEntity(UserEntity.class,request);
+        String dn =userEntity.getDn();
+        System.out.println("-----------------------------------删除组织单元-----------------------------------");
+
         ldap.connect();
         //删除组织单元
-        System.out.println("删除组织单元");
-        if (!ldap.isExistInLDAP("ou="+oldorganizationalUnit+",o="+oldorganization+dn)){
+        if (!ldap.isExistInLDAP(dn)){
             System.out.println("[所删除组织单元不存在]");
-            return "所删除组织单元不存在";
+            String string = "所删除组织单元不存在,请重新操作！";
+            JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            return jsonObject;
         }
-        dn ="ou="+oldorganizationalUnit+",o="+oldorganization+dn;
         ldap.delete(dn);
         ldap.close();
         System.out.println("[成功删除组织单元]");
-        return "成功删除组织单元";
+        String string = "成功删除组织单元！";
+        JSONObject jsonObject = ReturnJson.ReturnSuccessJson(string);
+        return jsonObject;
     }
 }

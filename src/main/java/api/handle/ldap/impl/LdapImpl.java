@@ -1,6 +1,7 @@
 package api.handle.ldap.impl;
 
 import api.handle.ldap.Ldap;
+import api.handle.util.PropertyUtil;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -9,6 +10,9 @@ import javax.naming.directory.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
+
+import static org.bouncycastle.asn1.x500.style.RFC4519Style.sn;
 
 /**
  * @Description:
@@ -19,14 +23,14 @@ import java.util.List;
 public class LdapImpl implements Ldap
 {
     private DirContext dc;
-
+    Properties properties = PropertyUtil.loadProperties("ldap.properties");
     @Override
     public synchronized void connect() throws NamingException
     {
         Hashtable env = new Hashtable();
-        String LDAP_URL = "ldap://localhost:10389"; // LDAP 访问地址
-        String adminName = "uid=admin,ou=system"; // 用户名
-        String adminPassword = "secret"; // 密码
+        String LDAP_URL = properties.getProperty("ldap.url"); // LDAP 访问地址
+        String adminName = properties.getProperty("adminName"); // 用户名
+        String adminPassword = properties.getProperty("adminPassword");// 密码
         env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.PROVIDER_URL, LDAP_URL);
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
@@ -43,14 +47,14 @@ public class LdapImpl implements Ldap
     }
 
     @Override
-    public void search(String userName) throws NamingException
+    public void search(String uid) throws NamingException
     {
         // 创建搜索控件
         SearchControls searchCtls = new SearchControls();
         // 设置搜索范围
         searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         // 设置搜索过滤条件
-        String searchFilter = "cn=" + userName;
+        String searchFilter = "uid=" + uid;
         // 设置搜索域节点
         String searchBase = "dc=register,dc=com";
         // 定制返回属性
@@ -93,13 +97,13 @@ public class LdapImpl implements Ldap
     }
 
     @Override
-    public List searchall(String para, String dn) throws NamingException
+    public List searchall(String uid, String dn) throws NamingException
     {
         List list = new ArrayList();
         SearchControls searchCtls=new SearchControls();
 //        searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
-        String searchFilter="cn="+para;
+        String searchFilter="uid="+uid;
 //        String returnedAttrs[]={"cn","sn","mail"};
 //        searchCtls.setReturningAttributes(returnedAttrs);
         NamingEnumeration<SearchResult> entries=dc.search(dn, searchFilter, searchCtls);
@@ -118,13 +122,13 @@ public class LdapImpl implements Ldap
         return list;
     }
     @Override
-    public String searchDescription(String cn, String dn) throws NamingException
+    public String searchInitials(String uid, String dn) throws NamingException
     {
-        String description = null;
+        String initials = null;
         SearchControls searchCtls=new SearchControls();
         searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
-        String searchFilter="cn="+cn;
-        String returnedAttrs[]={"description"};
+        String searchFilter="uid="+uid;
+        String returnedAttrs[]={"initials"};
         searchCtls.setReturningAttributes(returnedAttrs);
         NamingEnumeration<SearchResult> entries=dc.search(dn, searchFilter, searchCtls);
         while(entries.hasMoreElements()){
@@ -134,21 +138,21 @@ public class LdapImpl implements Ldap
                 for(NamingEnumeration<? extends Attribute> names=attrs.getAll();names.hasMore();){
                     Attribute attr=names.next();
                 for(NamingEnumeration<?> e =attr.getAll();e.hasMore();){
-                    description=e.next().toString();
+                    initials=e.next().toString();
                 }
                 }
             }
         }
-        return description;
+        return initials;
     }
 
     @Override
-    public String searchOne(String cn, String dn,String ret) throws NamingException
+    public String searchOne(String uid, String dn,String ret) throws NamingException
     {
         String one = null;
         SearchControls searchCtls=new SearchControls();
         searchCtls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
-        String searchFilter="cn="+cn;
+        String searchFilter="uid="+uid;
         String returnedAttrs[]={ret};
         searchCtls.setReturningAttributes(returnedAttrs);
         NamingEnumeration<SearchResult> entries=dc.search(dn, searchFilter, searchCtls);
@@ -209,13 +213,27 @@ public class LdapImpl implements Ldap
         }
     }
     @Override
-    public boolean update(String Keyword,String updt, String dn) throws NamingException
+    public boolean update(String cn, String userPassword, String givenName, String employeeType,String initials, String mail, String telephoneNumber, String description, String dn) throws NamingException
     {
         try {
-            ModificationItem[] mods = new ModificationItem[1];
+            ModificationItem[] mods = new ModificationItem[8];
             /* 修改属性 */
-             Attribute attr0 = new BasicAttribute(Keyword,updt);
+             Attribute attr0 = new BasicAttribute("cn",cn);
+             Attribute attr1 = new BasicAttribute("userPassword",userPassword);
+             Attribute attr2 = new BasicAttribute("givenName",givenName);
+             Attribute attr3 = new BasicAttribute("employeeType",employeeType);
+             Attribute attr4 = new BasicAttribute("initials",initials);
+             Attribute attr5 = new BasicAttribute("mail",mail);
+             Attribute attr6 = new BasicAttribute("telephoneNumber",telephoneNumber);
+             Attribute attr7 = new BasicAttribute("description",description);
              mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr0);
+             mods[1] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr1);
+             mods[2] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr2);
+             mods[3] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr3);
+             mods[4] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr4);
+             mods[5] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr5);
+             mods[6] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr6);
+             mods[7] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr7);
             /* 删除属性 */
 //             Attribute attr0 = new BasicAttribute("description", updt);
 //             mods[0] = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attr0);
@@ -258,7 +276,19 @@ public class LdapImpl implements Ldap
         dc.createSubcontext(root, attrs);
         System.out.println("addO Success!");
     }
+    @Override
+    public void addODN(String dn) throws NamingException {
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+        objclassSet.add("top");
+        objclassSet.add("organization");
+        attrs.put(objclassSet);
 
+        attrs.put("administrativeRole","accessControlSpecificArea");
+
+        dc.createSubcontext(dn, attrs);
+        System.out.println("addODN Success!");
+    }
     @Override
     public void addOU(String o, String ou) throws NamingException {
         String root = "ou="+ou+",o="+o+",dc=registry,dc=baotoucloud,dc=com";
@@ -272,6 +302,7 @@ public class LdapImpl implements Ldap
         dc.createSubcontext(root, attrs);
         System.out.println("addOU Success!");
     }
+
     @Override
     public void addOUDN(String dn) throws NamingException {
         BasicAttributes attrs = new BasicAttributes();
@@ -302,22 +333,43 @@ public class LdapImpl implements Ldap
         dc.createSubcontext(root, attrs);
         System.out.println("addEntry Success!");
     }
+
+//    @Override
+//    public void addEntryACI(String dn, String cn, String prescriptiveACI, String subtreeSpecification) throws NamingException {
+////        String root = "cn="+cn+",ou="+ou+",o="+o+",dc=registry,dc=baotoucloud,dc=com";
+////        String root = "cn="+cn+",ou="+ou+",o="+o+",dc=aa,dc=com";
+//        BasicAttributes attrs = new BasicAttributes();
+//        BasicAttribute objclassSet = new BasicAttribute("objectClass");
+//        objclassSet.add("top");
+//        objclassSet.add("subentry");
+//        objclassSet.add("accessControlSubentry");
+//        attrs.put(objclassSet);
+//        attrs.put("cn",cn);
+//        attrs.put("prescriptiveACI",prescriptiveACI);
+//        attrs.put("subtreeSpecification",subtreeSpecification);
+//        dc.createSubcontext("cn="+cn+","+dn, attrs);
+//        System.out.println("addEntry Success!");
+//    }
+
     @Override
-    public void addDNEntry(String dn, String sn, String cn, String password, String company, String address, String email, String telephoneNumber, String description) throws NamingException {
+    public void addDNEntry(String dn, String uid, String sn, String username, String password, String givenName, String employeeType,String initials, String email, String telephoneNumber, String description) throws NamingException {
         BasicAttributes attrs = new BasicAttributes();
         BasicAttribute objclassSet = new BasicAttribute("objectClass");
         objclassSet.add("top");
         objclassSet.add("inetOrgPerson");
         attrs.put(objclassSet);
+        attrs.put("uid",uid);
         attrs.put("sn",sn);
-        attrs.put("cn",cn);
+        attrs.put("cn",username);
         attrs.put("userPassword",password);
-        attrs.put("registeredAddress",company);
-        attrs.put("l",address);
+        attrs.put("givenName",givenName);
         attrs.put("telephoneNumber",telephoneNumber);
         attrs.put("mail",email);
+        attrs.put("employeeType",employeeType);
+        attrs.put("initials",initials);
         attrs.put("description",description);
-        dc.createSubcontext("cn="+cn+","+dn, attrs);
+//        dc.createSubcontext("cn="+username+","+dn, attrs);
+        dc.createSubcontext("uid="+uid+","+dn, attrs);
         System.out.println("addEntry Success!");
     }
     @Override
@@ -405,5 +457,7 @@ public class LdapImpl implements Ldap
             }
         }
     }
+
+
 }
 

@@ -1,4 +1,4 @@
-package api;
+package api.before;
 
 import api.handle.ldap.Ldap;
 import api.handle.ldap.impl.LdapImpl;
@@ -28,26 +28,31 @@ public class TestLdap
             String o= "jiaojing";
 //            String o= null;
             String ou= "xunluozu";
-            String sn= "xj";
-            String cn= "jpc";
+            String sn= "晓雨";
+            String cn= "苏晓雨";
             String password = "12345678";
             String uid = "cn=gg,ou=shenpizu,o=guanlizu,dc=registry,dc=baotoucloud,dc=com";
-            String address ="baotou";
+            String address ="包头";
             String email = "1234567890@yahoo.com";
-            String company ="d2";
+            String company ="云计算";
             String telephoneNumber = "1234567892";
+            String description = "empty";
 //            String description = "BeQuote";
-//            String description = "BeQuote";
-            String description = "Quote";
+//            String description = "Quote";
 
-//
-////                ldap.addO(o);
+//            String dn = "ou=FusionService,o=resou rce,dc=resources,dc=baotoucloud,dc=com";
+            String dn = "dc=registry,dc=baotoucloud,dc=com";
+            List list=ldap.searchForAttribut("cn",dn);
+        System.out.println(list.size());
+//                ldap.addO(o);
 //            ldap.addEntry(o,ou,sn,cn,password,company,address,email,telephoneNumber,description);
+//        ldap.addEntryACI(dn,cn,prescriptiveACI,subtreeSpecification);
 
-        String dn = "ou=keyuan,ou=zuzhibu,o=zhengfu,dc=registry,dc=baotoucloud,dc=com";
-        ldap.addUidEntry(dn,sn,cn,password,uid,description);
+//        ldap.addUidEntry(dn,sn,cn,password,uid,description);
 //        ldap.addDNEntry(dn,sn,cn,password,company,address,email,telephoneNumber,description);
 //        ldap.addOUDN(dn);
+//                ldap.addODN(dn);
+
 //        String p="sxy";
 //        List l = ldap.searchall(p,dn);
 //        for (int i = 0;i<l.size();i++){
@@ -77,9 +82,10 @@ public class TestLdap
 //            String dn = "ou=xunluozu,o=jiaojing,dc=registry,dc=baotoucloud,dc=com";
 //            String Attribut = "cn";
 //            List list=ldap.searchForAttribut(Attribut,dn);
+//            System.out.println(list.size());
 //            for (int i=0;i<list.size();i++){
-//                System.out.println(list.get(i));
-//
+//                System.out.println("=="+list.get(i));
+
 //                List list1=ldap.searchall(String.valueOf(list.get(i)),dn);
 //                Map<String,String> map = new LinkedHashMap<>();
 //                for (int j=0;j<list1.size();j++){
@@ -122,6 +128,7 @@ public class TestLdap
 //        } finally {
 //            ldap.close();
 //        }
+
 
     }
 }

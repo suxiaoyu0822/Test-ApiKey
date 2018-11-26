@@ -4,6 +4,8 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.sql.SQLOutput;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -106,10 +108,13 @@ public class NonceRandomUtil {
         System.out.println(nonceRandomUtil.randomHexInt());
         System.out.println(nonceRandomUtil.randomLong());
         System.out.println(nonceRandomUtil.randomHexLong());
-        System.out.println(nonceRandomUtil.randomUUID());
+        System.out.println("uuid:"+nonceRandomUtil.randomUUID());
         System.out.println(nonceRandomUtil.currentTimestamp());
         System.out.println(nonceRandomUtil.currentMills());
         System.out.println(nonceRandomUtil.currentHexMills());
         System.out.println(nonceRandomUtil.getCounter());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String nowdayTime = dateFormat.format(new Date());
+        System.out.println(nowdayTime);
     }
 }

@@ -1,6 +1,15 @@
 package api.handle.http.router;
 
+import api.handle.authority.resourcesldap.ResourceLdap;
+import api.handle.authority.resourcesldap.impl.ResourceLdapImpl;
+import api.handle.http.router.aboutJWT.AddJWTRoute;
+import api.handle.http.router.aboutJWT.DeleteJWTRoute;
+import api.handle.http.router.aboutJWT.ResetJWTRoute;
+import api.handle.http.router.aboutJWT.SearchTokenRoute;
+import api.handle.http.router.authorityRouter.*;
 import api.handle.http.router.manage.*;
+import api.handle.jwt.jwtldap.JwtLdap;
+import api.handle.jwt.jwtldap.impl.JwtLdapImpl;
 import api.handle.ldap.impl.LdapImpl;
 import api.handle.service.impl.ApiKeyServiceImpl;
 import com.google.inject.Inject;
@@ -60,6 +69,32 @@ public class SpartkRouterBuilder extends AbstractSpartkRouterBuilder {
             post("/SearchUser",new ManageSearchUserRoute(ldap));
             post("/MoveUser",new ManageMoveUserRoute(ldap));
             post("/QuoteUser",new ManageQuoteUserRoute(ldap));
+            post("/SearchAll",new ManageSearchAllRoute(ldap));
+            post("/MoveUpdata",new ManageMoveUpdataUserRoute(ldap));
+        });
+        path("/authority", () -> {
+            ResourceLdap resourceLdap = new ResourceLdapImpl();
+            post("/AddResourcesOU",new AuthorityAddResourcesOURoute(resourceLdap));
+            post("/CoverResourcesOU",new AuthorityCoverResourcesOURoute(resourceLdap));
+            post("/AddSecurityOU",new AuthorityAddSecurityOURoute(resourceLdap));
+            post("/AddRule",new AuthorityAddRuleRoute(resourceLdap));
+            post("/DeletRule",new AuthorityDeletRuleRoute(resourceLdap));
+            post("/UpdateRule",new AuthorityUpdateRuleRoute(resourceLdap));
+            post("/SearchRule",new AuthoritySearchRuleRoute(resourceLdap));
+            post("/MatchProcess",new AuthorityProcessMatchRuleRoute(resourceLdap));
+            post("/SearchAllOrgnization",new AuthoritySearchAllOrgnizationRoute(resourceLdap));
+            post("/SearchAllSecurity",new AuthoritySearchAllSecurityRoute(resourceLdap));
+            post("/InverseQuery",new AuthorityInverseQueryRoute(resourceLdap));
+            post("/DeletNode",new AuthorityDeletNodeRoute(resourceLdap));
+            post("/UpdateNode",new AuthorityUpdateNodeRoute(resourceLdap));
+            post("/SearchResourcesForSecurity",new AuthoritySearchResourcesForSecurityRoute(resourceLdap));
+        });
+        path("/jwt", () -> {
+            JwtLdap jwtLdap = new JwtLdapImpl();
+            post("/AddJwt",new AddJWTRoute(jwtLdap));
+            post("/DeleteJwt",new DeleteJWTRoute(jwtLdap));
+            post("/SearchToken",new SearchTokenRoute(jwtLdap));
+            post("/ResetJWT",new ResetJWTRoute(jwtLdap));
         });
     }
 }

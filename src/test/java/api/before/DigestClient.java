@@ -1,5 +1,7 @@
-package api;
+package api.before;
 
+import api.handle.util.MD5ObjectUtil;
+import api.handle.util.NonceRandomUtil;
 import net.sf.json.JSONArray;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
@@ -18,17 +20,24 @@ import java.util.Map;
 /**
  * @Description:
  * @Author:苏晓雨
- * @Date: Created in 18-9-10 下午5:00
+ * @Date: Created in 18-9-11 上午9:33
  */
 
-public class BasicClient {
+public class DigestClient {
     public static void main(String[] args) throws IOException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/user/BasicRegister";
+        String url = "http://localhost:8083/api/user/Digest";
         String username = "sxy";
         String password = "123456";
-        byte[] tokenByte = Base64.encodeBase64((username+":"+password).getBytes());
-        String tokenStr = new String(tokenByte);
+        String realm = "1";
+        MD5ObjectUtil md5ObjectUtil = new MD5ObjectUtil();
+        String HA1 =md5ObjectUtil.encrypt(username+":"+realm+":"+password);
+        System.out.println("HA1: "+HA1);
+        String HA2 =md5ObjectUtil.encrypt("Post:"+url);
+        System.out.println("HA2: "+HA2);
+        NonceRandomUtil nonceRandomUtil = new NonceRandomUtil();
+        String tokenStr =md5ObjectUtil.encrypt(HA1+":"+nonceRandomUtil.randomString(16)+":"+HA2);
+        System.out.println("tokenStr: "+tokenStr);
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setHeader("Authorization",tokenStr);
