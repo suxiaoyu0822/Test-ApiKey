@@ -32,6 +32,7 @@ public class AuthorityAddResourcesOURoute implements Route {
         BodyJsonEntity bodyJsonEntity = new BodyJsonEntity();
         ResourcePartEntity resourcePartEntity = bodyJsonEntity.getBodyJsonEntity(ResourcePartEntity.class,request);
         String dn = resourcePartEntity.getDn();
+//        System.out.println("************"+dn);
         String resource_id = resourcePartEntity.getResources_id();
 //        System.out.println("************"+resource_id);
         resourcePartEntity.setResources_id(resource_id);
@@ -40,6 +41,7 @@ public class AuthorityAddResourcesOURoute implements Route {
         //创建创建组织
         if (resourceLdap.isExistInLDAP("resources-id="+resource_id+","+dn)){
             System.out.println("[所创建资源组织单元已存在]");
+            resourceLdap.close();
             String string = "所创建资源组织单元已存在,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
             return jsonObject;
@@ -48,6 +50,7 @@ public class AuthorityAddResourcesOURoute implements Route {
             resourceLdap.saveResourcesOU(resourcePartEntity);
         }catch (Exception e){
             System.out.println("[所创建资源组织单元已存在，或者绑定失败！]");
+            resourceLdap.close();
             String string = "所创建资源组织单元已存在,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
             return jsonObject;

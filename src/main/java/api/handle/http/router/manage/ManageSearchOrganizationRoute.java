@@ -51,6 +51,7 @@ public class ManageSearchOrganizationRoute implements Route {
             String string = "查询组织失败,请重新操作！";
             System.out.println(string);
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         for (int i=0;i<list.size();i++) {
@@ -62,6 +63,7 @@ public class ManageSearchOrganizationRoute implements Route {
         System.out.println(map);
         JSONObject jsonObject = JSONObject.fromObject(map);
         System.out.println(jsonObject);
+        ldap.close();
         return jsonObject;
     }
 }

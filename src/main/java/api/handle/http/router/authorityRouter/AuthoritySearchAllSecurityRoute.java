@@ -56,6 +56,7 @@ public class AuthoritySearchAllSecurityRoute implements Route {
             e.printStackTrace();
             String string = "查询安全组信息失败,请重新操作!";
             JSONObject jsonObject = JSONObject.fromObject(string);
+            resourceLdap.close();
             return jsonObject;
         }
         for (int i = 0;i<listo.size();i++){
@@ -79,6 +80,7 @@ public class AuthoritySearchAllSecurityRoute implements Route {
         JSONObject jsonObject = JSONObject.fromObject(map2);
         System.out.println(jsonObject);
         JSONObject jsonObject1 = ReturnJson.ReturnSuccessJson(jsonObject.toString());
+        resourceLdap.close();
         return jsonObject1;
     }
 }

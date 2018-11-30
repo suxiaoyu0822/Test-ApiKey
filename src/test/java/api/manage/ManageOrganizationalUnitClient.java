@@ -25,8 +25,8 @@ public class ManageOrganizationalUnitClient {
     public static void main(String[] args) throws IOException {
         String oldorganization = "公安";
         String oldorganizationalUnit="";
-        String neworganizationalUnit="xunluozu";
-        String dn="ou=科技二组,ou=科技处,o=公安,dc=registry,dc=baotoucloud,dc=com";
+        String neworganizationalUnit="新统计部";
+        String dn="ou=组织统战部1,o=政府,dc=registry,dc=baotoucloud,dc=com";
         Map<Object, Object> map = new HashMap<>();
         map.put("oldorganization",oldorganization);
         map.put("oldorganizationalUnit",oldorganizationalUnit);
@@ -37,9 +37,9 @@ public class ManageOrganizationalUnitClient {
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/manage/AddOU";
+//        String url = "http://localhost:8083/api/manage/AddOU";
 //        String url = "http://localhost:8083/api/manage/DeletOU";
-//        String url = "http://localhost:8083/api/manage/UpdataOU";
+        String url = "http://localhost:8083/api/manage/UpdataOU";
 //        String url = "http://localhost:8083/api/manage/SearchOU";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");

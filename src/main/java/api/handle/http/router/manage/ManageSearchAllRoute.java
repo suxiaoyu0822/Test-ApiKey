@@ -55,6 +55,7 @@ public class ManageSearchAllRoute implements Route {
             e.printStackTrace();
             String string = "查询失败,请重新操作!";
             JSONObject jsonObject = JSONObject.fromObject(string);
+            ldap.close();
             return jsonObject;
         }
         for (int i=0;i<listo.size();i++) {
@@ -102,6 +103,7 @@ public class ManageSearchAllRoute implements Route {
         System.out.println("查询成功！");
         JSONObject jsonObject = JSONObject.fromObject(map);
         System.out.println("json:"+jsonObject);
+        ldap.close();
         return jsonObject;
     }
 }

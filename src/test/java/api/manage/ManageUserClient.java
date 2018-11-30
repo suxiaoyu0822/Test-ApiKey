@@ -47,7 +47,7 @@ public class ManageUserClient {
         String postalAddress="cn=苏晓雨,ou=科技一组,ou=科技处,o=公安,dc=registry,dc=baotoucloud,dc=com";
 //        String dn = "ou=运维二组,ou=运维组,o=管理组,dc=registry,dc=baotoucloud,dc=com";
 //        String dn = "ou=科技一组,ou=科技处,o=厂商,dc=registry,dc=baotoucloud,dc=com";
-        String dn = "dc=registry,dc=baotoucloud,dc=com";
+        String dn = "ou=组织统战部1,o=政府,dc=registry,dc=baotoucloud,dc=com";
         String description = "我是备注";
         Map<Object, Object> map = new HashMap<>();
         map.put("cn",cn);
@@ -74,11 +74,12 @@ public class ManageUserClient {
 //        String url = "http://localhost:8083/api/manage/AddUser";
 //        String url = "http://localhost:8083/api/manage/DeletUser";
 //        String url = "http://localhost:8083/api/manage/UpdataUser";
-//        String url = "http://localhost:8083/api/manage/SearchUser";
+        String url = "http://localhost:8083/api/manage/SearchUser";
 //        String url = "http://192.168.101.151:8083/api/manage/SearchUser";
 //        String url = "http://localhost:8083/api/manage/MoveUser";
 //        String url = "http://localhost:8083/api/manage/QuoteUser";
-        String url = "http://localhost:8083/api/manage/SearchAll";
+//        String url = "http://localhost:8083/api/manage/MoveUpdata";
+//        String url = "http://localhost:8083/api/manage/SearchAll";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setEntity(entity);

@@ -53,6 +53,7 @@ public class ManageDeletUserRoute implements Route {
         if (Initials.equals("BeQuote")){
             String string = "删除失败，请先解除其他引用，再进行删除";
             JSONObject jsonObject = JSONObject.fromObject(string);
+            ldap.close();
             return jsonObject;
         }
         System.out.println("删除用户");

@@ -42,6 +42,7 @@ public class ManageDeletOrganizationalUnitRoute implements Route {
             System.out.println("[所删除组织单元不存在]");
             String string = "所删除组织单元不存在,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         ldap.delete(dn);

@@ -39,6 +39,7 @@ public class AuthorityAddSecurityOURoute implements Route {
         resourceLdap.connect();
         if (resourceLdap.isExistInLDAP("security-id="+security_id+","+dn)){
             System.out.println("[所创建安全组织单元已存在]");
+            resourceLdap.close();
             String string = "所创建安全组织单元已存在,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
             return jsonObject;

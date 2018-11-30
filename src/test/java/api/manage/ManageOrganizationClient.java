@@ -38,9 +38,9 @@ public class ManageOrganizationClient {
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://localhost:8083/api/manage/AddO";
+//        String url = "http://localhost:8083/api/manage/AddO";
 //        String url = "http://localhost:8083/api/manage/DeletO";
-//        String url = "http://localhost:8083/api/manage/UpdataO";
+        String url = "http://localhost:8083/api/manage/UpdataO";
 //        String url = "http://localhost:8083/api/manage/SearchO";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");

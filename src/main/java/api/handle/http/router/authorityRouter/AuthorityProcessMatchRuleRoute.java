@@ -93,6 +93,7 @@ public class AuthorityProcessMatchRuleRoute implements Route {
             System.out.println("action："+action);
         }
         //返回匹配结果
+        resourceLdap.close();
         return action;
     }
 }

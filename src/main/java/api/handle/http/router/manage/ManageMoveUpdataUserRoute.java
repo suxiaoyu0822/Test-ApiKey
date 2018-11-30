@@ -58,6 +58,7 @@ public class ManageMoveUpdataUserRoute implements Route {
             e.printStackTrace();
             String string = "添加用户失败,请重新操作!";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         System.out.println("修改并移动用户");
@@ -67,6 +68,7 @@ public class ManageMoveUpdataUserRoute implements Route {
             e.printStackTrace();
             String string = "删除用户失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         System.out.println("[成功添加用户]");

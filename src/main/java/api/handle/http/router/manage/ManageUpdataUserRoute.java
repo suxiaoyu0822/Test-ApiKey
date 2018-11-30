@@ -55,11 +55,13 @@ public class ManageUpdataUserRoute implements Route {
             e.printStackTrace();
             String string = "修改用户信息失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         System.out.println("[修改用户信息成功]");
         String string = "修改用户信息成功!";
         JSONObject jsonObject = ReturnJson.ReturnSuccessJson(string);
+        ldap.close();
         return jsonObject;
     }
 }

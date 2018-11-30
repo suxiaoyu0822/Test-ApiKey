@@ -45,6 +45,7 @@ public class AuthorityUpdateRuleRoute implements Route {
             System.out.println("修改规则失败,请重新操作！");
             String string = "修改规则失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         System.out.println("修改规则成功！");

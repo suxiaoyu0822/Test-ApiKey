@@ -40,6 +40,7 @@ public class ManageAddOrganizationalUnitRoute implements Route {
             System.out.println("[所创建组织单元已存在]");
             String string = "所创建组织单元已存在,请重新操作！";
             JSONObject jsonObject =ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         ldap.addOUDN(dn);

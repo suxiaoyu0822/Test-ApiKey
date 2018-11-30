@@ -114,6 +114,7 @@ public class AuthoritySearchAllOrgnizationRoute implements Route {
         System.out.println("查询成功！");
         JSONObject jsonObject = JSONObject.fromObject(map);
         System.out.println("json:"+jsonObject);
+        resourceLdap.close();
         return jsonObject;
     }
 }

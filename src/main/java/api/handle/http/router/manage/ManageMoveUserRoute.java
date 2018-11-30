@@ -57,6 +57,7 @@ public class ManageMoveUserRoute implements Route {
             e.printStackTrace();
             String string = "移动用户到其他组织失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         Map<String,String> map = new LinkedHashMap<>();
@@ -79,6 +80,7 @@ public class ManageMoveUserRoute implements Route {
         if (description.equals("BeQuote")){
             String string = "移动失败，请先解除其他uid="+"cn="+username+",ou="+oldorganizationalUnit+",o="+oldorganization+dn+"的引用，再进行移动";
             JSONObject jsonObject1 = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject1;
         }
         //添加到新组织

@@ -54,6 +54,7 @@ public class ManageSearchUserRoute implements Route {
             String string = "查询失败,请重新操作！";
             System.out.println(string);
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
 //        List<String> mapList = new ArrayList<>();
@@ -103,6 +104,7 @@ public class ManageSearchUserRoute implements Route {
 //        System.out.println(jsonObject1.toString(1));
 //        System.out.println("uid:"+jsonObject1.getString("uid"));
 //        System.out.println("jsonObject:"+jsonObject);
+        ldap.close();
         return jsonObject;
     }
 }

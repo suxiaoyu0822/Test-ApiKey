@@ -86,6 +86,7 @@ public class ResetJWTRoute implements Route {
         }catch (Exception e){
             System.out.println(e);
             System.out.println("[生成token失败,请重新操作！]");
+            jwtLdap.close();
             String string = "生成token失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
             return jsonObject;

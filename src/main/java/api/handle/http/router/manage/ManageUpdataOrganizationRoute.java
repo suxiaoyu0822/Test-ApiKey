@@ -44,6 +44,7 @@ public class ManageUpdataOrganizationRoute implements Route {
             System.out.println("[所修改组织不存在]");
             String string = "所修改组织不存在,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         String newo= "o="+neworganization;

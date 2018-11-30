@@ -48,6 +48,7 @@ public class AuthoritySearchRuleRoute implements Route{
             e.printStackTrace();
             String string = "查询规则失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         Map<String, String> mapList = new LinkedHashMap<>();

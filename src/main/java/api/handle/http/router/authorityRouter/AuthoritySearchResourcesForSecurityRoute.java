@@ -68,6 +68,7 @@ public class AuthoritySearchResourcesForSecurityRoute implements Route {
         System.out.println("json1:"+jsonObject.toString());
         JSONObject jsonObject1 = ReturnJson.ReturnSuccessJson(jsonObject.toString());
         System.out.println("jsonObject1:"+jsonObject1);
+        resourceLdap.close();
         return jsonObject1;
     }
 }

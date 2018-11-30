@@ -39,6 +39,7 @@ public class AuthorityAddRuleRoute implements Route {
             //查询dn下规则数量，大于10禁止添加，小于10正常添加。
             if (size>=10){
                 System.out.println("此安全组规则超过十条,添加规则失败！");
+                resourceLdap.close();
                 String string = "此安全组规则超过十条,添加规则失败！";
                 JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
                 return jsonObject;
@@ -46,6 +47,7 @@ public class AuthorityAddRuleRoute implements Route {
             resourceLdap.saveRule(resourcePartEntity);
         } catch (NamingException e) {
             e.printStackTrace();
+            resourceLdap.close();
             String string = "添加规则失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
             return jsonObject;

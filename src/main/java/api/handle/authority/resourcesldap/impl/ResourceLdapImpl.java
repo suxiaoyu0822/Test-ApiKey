@@ -120,7 +120,7 @@ public class ResourceLdapImpl implements ResourceLdap {
             b=true;
         } catch (Exception e) {
 //            e.printStackTrace();
-            System.out.println("Exception in delete():" + e);
+//            System.out.println("Exception in delete():" + e);
             b=false;
         }
         return b;
@@ -224,8 +224,8 @@ public class ResourceLdapImpl implements ResourceLdap {
             dc.modifyAttributes("resources-id="+resourcePartEntity.getResources_id()+","+resourcePartEntity.getDn(), mods);
             b=true;
         } catch (NamingException e) {
-            e.printStackTrace();
-            System.err.println("Error: " + e.getMessage());
+//            e.printStackTrace();
+//            System.err.println("Error: " + e.getMessage());
             b=false;
         }
         return b;

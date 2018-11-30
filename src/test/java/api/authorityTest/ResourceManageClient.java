@@ -28,8 +28,9 @@ public class ResourceManageClient {
 
         String security_name="安全二组";
         String resources_name="API3";
-        String security_id ="1542162118080";
-        String resources_id ="202";
+        String security_id ="1542162134646";
+        String resources_id ="39";
+        String apiversionid ="39";
         String description ="描述";
 
         String rule_id ="1234567";
@@ -42,8 +43,8 @@ public class ResourceManageClient {
         String group_name = "大军";
         String action = "normal";
 //        String action = "drop";
-//        String dn ="security-id=1542162156746,o=安全组,dc=resources,dc=baotoucloud,dc=com";
-        String dn ="ou=API,o=资源,dc=resources,dc=baotoucloud,dc=com";
+        String dn ="security-id=1542162118087,o=安全组,dc=resources,dc=baotoucloud,dc=com";
+//        String dn ="ou=API,o=资源,dc=resources,dc=baotoucloud,dc=com";
             String newdn ="userid=1234567,ou=API,o=resource,dc=resources,dc=baotoucloud,dc=com";
         String updtkey = "";
         String updt = "";
@@ -54,6 +55,7 @@ public class ResourceManageClient {
         map.put("resources_name",resources_name);
         map.put("security_id",security_id);
         map.put("resources_id",resources_id);
+        map.put("apiversionid",apiversionid);
         map.put("description",description);
         map.put("rule_id",rule_id);
         map.put("client_ip_range",client_ip_range);
@@ -74,14 +76,14 @@ public class ResourceManageClient {
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
 //        String url = "http://localhost:8083/api/authority/AddResourcesOU";
-        String url = "http://localhost:8083/api/authority/CoverResourcesOU";
+//        String url = "http://localhost:8083/api/authority/CoverResourcesOU";
 //        String url = "http://localhost:8083/api/authority/AddSecurityOU";
 //        String url = "http://localhost:8083/api/authority/AddRule";
 //        String url = "http://localhost:8083/api/authority/DeletRule";
 //        String url = "http://localhost:8083/api/authority/DeletNode";
 //        String url = "http://localhost:8083/api/authority/UpdateRule";
 //        String url = "http://localhost:8083/api/authority/UpdateNode";
-//        String url = "http://localhost:8083/api/authority/SearchRule";
+        String url = "http://localhost:8083/api/authority/SearchRule";
 //        String url = "http://localhost:8083/api/authority/SearchAllOrgnization";
 //        String url = "http://localhost:8083/api/authority/SearchAllSecurity";
 //        String url = "http://localhost:8083/api/authority/InverseQuery";

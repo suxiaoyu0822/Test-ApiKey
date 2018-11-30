@@ -40,6 +40,7 @@ public class AuthorityUpdateNodeRoute implements Route {
             System.out.println("所修改节点不存在,请重新操作！");
             String string = "所修改节点不存在,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         boolean b = resourceLdap.updateNodes(resourcePartEntity);
@@ -47,6 +48,7 @@ public class AuthorityUpdateNodeRoute implements Route {
             System.out.println("修改节点失败,请重新操作！");
             String string = "修改节点失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         System.out.println("修改节点成功！");

@@ -22,15 +22,15 @@ import java.util.Map;
 
 public class AboutJwtClient {
     public static void main(String[] args) throws IOException {
-        String appId = "123456";
+        String appId = "211";
         String alg = "HS256";               //加密算法
         String typ = "JWT";                 //类型
         String iss = "苏下雨";               //签发者
         String sub = "苏大于";               //面向的用户
         String aud = "苏暴雨";               //接收者
-        String nbf = "0";                   //什么时间之前不可用（大于等于签发时间）
-        String exp = "10";                  //过期时间
-        String iat = "2018-11-22";          //签发时间
+        String nbf = "2019-11-20";                   //什么时间之前不可用（大于等于签发时间）
+        String exp = "366";                  //过期时间
+        String iat = "2018-11-30";          //签发时间
         String jti = "qwer";                //jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
         String dn = "o=应用,dc=resources,dc=baotoucloud,dc=com";
 //        String dn = "appId=123456,o=应用,dc=resources,dc=baotoucloud,dc=com";
@@ -51,10 +51,10 @@ public class AboutJwtClient {
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         CloseableHttpClient httpclient = HttpClients.createDefault();
-//        String url = "http://localhost:8083/api/jwt/AddJwt";
+        String url = "http://localhost:8083/api/jwt/AddJwt";
 //        String url = "http://localhost:8083/api/jwt/DeleteJwt";
 //        String url = "http://localhost:8083/api/jwt/SearchToken";
-        String url = "http://localhost:8083/api/jwt/ResetJWT";
+//        String url = "http://localhost:8083/api/jwt/ResetJWT";
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("Content-type", "application/json; charset=utf-8");
         httppost.setEntity(entity);

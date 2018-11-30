@@ -53,6 +53,7 @@ public class AuthorityInverseQueryRoute implements Route {
             System.out.println("该安全子组没有绑定任何资源，请重新操作！");
             String string = "该安全子组没有绑定任何资源，请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         Map<String, String> map = new LinkedHashMap<>();

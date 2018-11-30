@@ -32,7 +32,7 @@ public class AuthorityCoverResourcesOURoute implements Route {
         ResourcePartEntity resourcePartEntity = bodyJsonEntity.getBodyJsonEntity(ResourcePartEntity.class,request);
         String dn = resourcePartEntity.getDn();
         String resource_id = resourcePartEntity.getResources_id();
-        System.out.println("-----------------------------------绑定覆盖-----------------------------------");
+        System.out.println("-----------------------------------绑定覆盖（添加和覆盖资源节点）-----------------------------------");
         resourceLdap.connect();
         if (resourceLdap.isExistInLDAP("resources-id="+resource_id+","+dn)){
             //绑定存在！根据dn进行安全组id的修改
@@ -40,11 +40,13 @@ public class AuthorityCoverResourcesOURoute implements Route {
                 resourceLdap.updateResource(resourcePartEntity);
             }catch (Exception e){
                 System.out.println("[ldap服务器异常,绑定覆盖失败,请重新操作！！]");
+                resourceLdap.close();
                 String string = "ldap服务器异常,绑定覆盖失败,请重新操作！";
                 JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
                 return jsonObject;
             }
             System.out.println("[绑定覆盖成功！]");
+            resourceLdap.close();
             String string = "绑定覆盖成功！";
             JSONObject jsonObject = ReturnJson.ReturnSuccessJson(string);
             resourceLdap.close();
@@ -58,6 +60,7 @@ public class AuthorityCoverResourcesOURoute implements Route {
             System.out.println("[ldap服务器异常,添加绑定失败,请重新操作！]");
             String string = "ldap服务器异常,添加绑定失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         System.out.println("[成功创建资源组织单元]");

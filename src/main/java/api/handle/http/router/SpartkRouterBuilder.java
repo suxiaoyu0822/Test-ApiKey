@@ -2,10 +2,7 @@ package api.handle.http.router;
 
 import api.handle.authority.resourcesldap.ResourceLdap;
 import api.handle.authority.resourcesldap.impl.ResourceLdapImpl;
-import api.handle.http.router.aboutJWT.AddJWTRoute;
-import api.handle.http.router.aboutJWT.DeleteJWTRoute;
-import api.handle.http.router.aboutJWT.ResetJWTRoute;
-import api.handle.http.router.aboutJWT.SearchTokenRoute;
+import api.handle.http.router.aboutJWT.*;
 import api.handle.http.router.authorityRouter.*;
 import api.handle.http.router.manage.*;
 import api.handle.jwt.jwtldap.JwtLdap;
@@ -95,6 +92,7 @@ public class SpartkRouterBuilder extends AbstractSpartkRouterBuilder {
             post("/DeleteJwt",new DeleteJWTRoute(jwtLdap));
             post("/SearchToken",new SearchTokenRoute(jwtLdap));
             post("/ResetJWT",new ResetJWTRoute(jwtLdap));
+            post("/Authentication",new AuthenticationRoute(jwtLdap));
         });
     }
 }

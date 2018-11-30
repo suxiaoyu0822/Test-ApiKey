@@ -44,13 +44,15 @@ public class AuthorityDeletNodeRoute implements Route {
             System.out.println("所删除节点不存在，或ldap服务器异常，无法进行删除操作！");
             String string = "所删除节点不存在,或ldap服务器异常，无法进行删除操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
 
         if (!b){
-            System.out.println("所删除节点下存在文件，或节点不存在，无法进行删除操作！");
-            String string = "所删除节点下存在文件，或节点不存在，无法进行删除操作！";
+            System.out.println("所删除节点不存在，或节点下存在文件，无法进行删除操作！");
+            String string = "所删除节点不存在，或节点下存在文件，无法进行删除操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         System.out.println("删除成功！");

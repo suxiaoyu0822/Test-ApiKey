@@ -43,6 +43,7 @@ public class SearchTokenRoute implements Route {
             System.out.println("token:"+token);
         }catch (Exception e){
             System.out.println("查询的appId不存在，或者ldap异常，查询失败！");
+            jwtLdap.close();
             String string = "查询的appId不存在，或者ldap异常，查询失败！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
             return jsonObject;

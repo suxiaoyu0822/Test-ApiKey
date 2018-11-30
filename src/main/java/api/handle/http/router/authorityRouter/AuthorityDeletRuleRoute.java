@@ -39,6 +39,7 @@ public class AuthorityDeletRuleRoute implements Route {
             System.out.println("所删除规则不存在，无法进行删除操作！");
             String string = "所删除规则不存在，无法进行删除操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            resourceLdap.close();
             return jsonObject;
         }
         resourceLdap.delete(dn);

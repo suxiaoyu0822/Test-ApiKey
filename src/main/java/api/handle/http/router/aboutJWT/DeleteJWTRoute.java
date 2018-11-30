@@ -38,6 +38,7 @@ public class DeleteJWTRoute implements Route {
         boolean b=jwtLdap.delete(dn);
         if (!b){
             System.out.println("删除jwt不存在，或者ldap异常，删除失败！");
+            jwtLdap.close();
             String string = "删除jwt不存在，或者ldap异常，删除失败！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
             return jsonObject;

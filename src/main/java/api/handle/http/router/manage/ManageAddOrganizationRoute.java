@@ -41,6 +41,7 @@ public class ManageAddOrganizationRoute implements Route {
             System.out.println("[所创建组织已存在]");
             String string = "所创建组织已存在,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         ldap.addO(oldorganization);

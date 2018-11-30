@@ -51,6 +51,7 @@ public class ManageQuoteUserRoute implements Route {
             e.printStackTrace();
             String string = "引用用户到其他组织失败,请重新操作！";
             JSONObject jsonObject = ReturnJson.ReturnFailJson(string);
+            ldap.close();
             return jsonObject;
         }
         ldap.close();
